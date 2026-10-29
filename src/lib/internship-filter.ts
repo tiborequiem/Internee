@@ -112,6 +112,13 @@ export function checkStrictEgyptInternship(
   }
 
   // Rule 5: Location must be in Egypt or Remote/Hybrid
+  const NON_EGYPT_COUNTRY_REGEX =
+    /\b(indonesia|india|pakistan|bangladesh|nigeria|uk|usa|united states|london|germany|canada|poland|kenya|saudi|uae|dubai|singapore|malaysia|philippines|turkey|spain|france|italy)\b/i;
+
+  if (NON_EGYPT_COUNTRY_REGEX.test(cleanTitle)) {
+    return { valid: false, reason: `Title explicitly mentions foreign country/region outside Egypt` };
+  }
+
   const isEgypt =
     cleanLocation === "" ||
     cleanLocation.toLowerCase().includes("egypt") ||

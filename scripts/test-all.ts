@@ -20,7 +20,7 @@ async function runTests() {
   console.log("🧪 RUNNING SYSTEM SPECIFICATION TESTS");
   console.log("=========================================\n");
 
-  await seed();
+  await seed(false);
 
   let passed = 0;
   let failed = 0;

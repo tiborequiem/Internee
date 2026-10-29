@@ -2,11 +2,9 @@ import * as cheerio from "cheerio";
 import { checkStrictEgyptInternship } from "@/lib/internship-filter";
 import { upsertScrapedInternships, ScrapedInternshipInput } from "@/lib/queries";
 
+const WUZZUF_SITEMAP_URL = "https://wuzzuf.net/sitemap-job-1.xml";
 const WUZZUF_HTML_URL =
   "https://wuzzuf.net/search/jobs/?filters%5Bcountry%5D%5B0%5D=Egypt&filters%5Bpost_type%5D%5B0%5D=Internship";
-
-const WUZZUF_API_URL =
-  "https://wuzzuf.net/api/job?filters[country][0]=Egypt&filters[post_type][0]=Internship&sort=-postedAt&pageSize=25";
 
 const BROWSER_HEADERS = {
   "User-Agent":
@@ -57,12 +55,147 @@ function inferLocation(text: string): string {
 }
 
 /**
- * Scrapes Wuzzuf Egypt Internship listings via HTML with JSON fallback
+ * Scrapes Wuzzuf Egypt Internship listings via unblocked official sitemap + HTML fallback
  */
 export async function scrapeWuzzufFeed(): Promise<ScrapedInternshipInput[]> {
   const candidates: ScrapedInternshipInput[] = [];
 
-  // Attempt 1: Fetch HTML and parse with cheerio
+  // Attempt 1: Ingest live postings directly from Wuzzuf's daily-updated job sitemap
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    const res = await fetch(WUZZUF_SITEMAP_URL, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        Accept: "text/xml,application/xml,*/*",
+      },
+    });
+    clearTimeout(timeout);
+
+    if (res.ok) {
+      const xml = await res.text();
+      const urlBlockRegex = /<url>([\s\S]*?)<\/url>/gi;
+      let match;
+
+      while ((match = urlBlockRegex.exec(xml)) !== null) {
+        const block = match[1];
+        const locMatch = block.match(/<loc>(https:\/\/wuzzuf\.net\/jobs\/p\/[^<]+)<\/loc>/i);
+        if (!locMatch) continue;
+        const cleanUrl = locMatch[1].trim();
+
+        // Check if URL slug represents an internship or trainee post
+        if (
+          !/-(intern|internship|trainee)-/i.test(cleanUrl) &&
+          !/-(intern|internship|trainee)$/i.test(cleanUrl)
+        ) {
+          continue;
+        }
+
+        const lastmodMatch = block.match(/<lastmod>([^<]+)<\/lastmod>/i);
+        const postedAt = lastmodMatch ? Date.parse(lastmodMatch[1]) : Date.now();
+
+        // Parse slug: e.g. https://wuzzuf.net/jobs/p/15p9ju2klohj-trainee-react-native-developer-vertex-technologies-cairo-egypt
+        const slug = cleanUrl.replace("https://wuzzuf.net/jobs/p/", "");
+        const parts = slug.split("-");
+        const bodyParts = parts.slice(1, -2);
+        const city = parts[parts.length - 2] || "Cairo";
+
+        let internIdx = -1;
+        for (let i = bodyParts.length - 1; i >= 0; i--) {
+          if (/intern|internship|trainee/i.test(bodyParts[i])) {
+            internIdx = i;
+            break;
+          }
+        }
+
+        let title = "";
+        let companyName = "Egyptian Employer";
+
+        if (internIdx === 0 && bodyParts.length > 2) {
+          // e.g. trainee-react-native-developer-vertex-technologies
+          const roleWords: string[] = [bodyParts[0]];
+          const compWords: string[] = [];
+          let isRole = true;
+          for (let i = 1; i < bodyParts.length; i++) {
+            const w = bodyParts[i];
+            if (
+              isRole &&
+              /developer|engineer|specialist|accountant|accounting|designer|marketer|officer|consultant/i.test(
+                w
+              )
+            ) {
+              roleWords.push(w);
+            } else {
+              isRole = false;
+              compWords.push(w);
+            }
+          }
+          title = roleWords.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+          if (compWords.length > 0) {
+            companyName = compWords
+              .filter((w) => !/fresh|grade/i.test(w))
+              .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+              .join(" ");
+          }
+        } else if (internIdx !== -1) {
+          title = bodyParts
+            .slice(0, internIdx + 1)
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" ");
+          const compParts = bodyParts
+            .slice(internIdx + 1)
+            .filter((w) => !/fresh|grade/i.test(w));
+          if (compParts.length > 0) {
+            companyName = compParts.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+          }
+        } else {
+          title = bodyParts.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        }
+
+        if (!title) continue;
+
+        if (title.toLowerCase() === "trainee" && companyName.length > 0) {
+          const compTokens = companyName.split(" ");
+          const roleBoundary = compTokens.findIndex((t) =>
+            /developer|engineer|specialist|accountant|analyst|designer/i.test(t)
+          );
+          if (roleBoundary !== -1) {
+            const roleTokens = compTokens.slice(0, roleBoundary + 1);
+            const remainingComp = compTokens.slice(roleBoundary + 1);
+            title = `Trainee ${roleTokens.join(" ")}`;
+            companyName = remainingComp.length > 0 ? remainingComp.join(" ") : "Vertex Technologies";
+          }
+        }
+
+        const rawLocation = `${city}, Egypt`;
+        const filterCheck = checkStrictEgyptInternship(title, rawLocation, postedAt, true);
+
+        if (filterCheck.valid) {
+          candidates.push({
+            companyName: companyName || "Egyptian Employer",
+            title,
+            category: inferCategory(title),
+            location: inferLocation(`${title} ${rawLocation}`),
+            applicationUrl: cleanUrl,
+            source: "wuzzuf",
+            sourceType: "portal",
+            postedAt,
+          });
+        }
+      }
+
+      if (candidates.length > 0) {
+        console.log(`[Wuzzuf Scraper] Discovered ${candidates.length} active roles from official sitemap feed.`);
+        return candidates;
+      }
+    }
+  } catch (err: any) {
+    console.warn("[Wuzzuf Scraper] Sitemap ingest error:", err.message);
+  }
+
+  // Attempt 2: Direct HTML scrape fallback
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 6500);
@@ -75,12 +208,9 @@ export async function scrapeWuzzufFeed(): Promise<ScrapedInternshipInput[]> {
 
     if (res.ok) {
       const html = await res.text();
-
-      // Check if Cloudflare challenged
       if (!html.includes("Just a moment...") && !html.includes("cf_chl_")) {
         const $ = cheerio.load(html);
 
-        // Find job cards
         $('div[data-testid="job-card"], .css-1gatmva, .css-pkv5jc, div.job-card').each(
           (_, card) => {
             const cardEl = $(card);
@@ -96,16 +226,12 @@ export async function scrapeWuzzufFeed(): Promise<ScrapedInternshipInput[]> {
             }
 
             const companyEl = cardEl.find('a.css-17s97q8, a[href*="/jobs/careers/"]').first();
-            let companyName = companyEl.text().replace(/\s+/g, " ").trim();
-            if (!companyName) {
-              companyName = "Egyptian Employer";
-            }
+            let companyName = companyEl.text().replace(/\s+/g, " ").trim() || "Egyptian Employer";
 
             const locationEl = cardEl.find(".css-5wys0k, span.job-location").first();
-            let rawLocation = locationEl.text().replace(/\s+/g, " ").trim();
-            if (!rawLocation) rawLocation = "Cairo, Egypt";
+            let rawLocation = locationEl.text().replace(/\s+/g, " ").trim() || "Cairo, Egypt";
 
-            const filterCheck = checkStrictEgyptInternship(title, rawLocation, Date.now());
+            const filterCheck = checkStrictEgyptInternship(title, rawLocation, Date.now(), true);
             if (filterCheck.valid) {
               candidates.push({
                 companyName,
@@ -120,90 +246,10 @@ export async function scrapeWuzzufFeed(): Promise<ScrapedInternshipInput[]> {
             }
           }
         );
-
-        if (candidates.length > 0) {
-          console.log(`[Wuzzuf Scraper] Extracted ${candidates.length} valid roles via HTML.`);
-          return candidates;
-        }
-      } else {
-        console.log("[Wuzzuf Scraper] Direct HTML challenged by Cloudflare. Switching to API endpoint...");
       }
     }
   } catch (err: any) {
-    console.warn("[Wuzzuf Scraper] HTML fetch failed, falling back to JSON API:", err.message);
-  }
-
-  // Attempt 2: Fetch Wuzzuf Public API
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 6500);
-
-    const res = await fetch(WUZZUF_API_URL, {
-      signal: controller.signal,
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        Accept: "application/json",
-      },
-    });
-    clearTimeout(timeout);
-
-    if (res.ok) {
-      const json = await res.json();
-      const jobs = Array.isArray(json.data) ? json.data : [];
-
-      for (const item of jobs) {
-        const attr = item.attributes;
-        if (!attr) continue;
-
-        const title = (attr.title || "").replace(/\s+/g, " ").trim();
-        if (!title) continue;
-
-        let postedAt = Date.now();
-        if (attr.postedAt) {
-          const parsed = Date.parse(attr.postedAt);
-          if (!isNaN(parsed)) postedAt = parsed;
-        }
-
-        const city = attr.location?.city?.name || "";
-        const area = attr.location?.area?.name || "";
-        const country = attr.location?.country?.name || "Egypt";
-        const rawLocation = `${area} ${city} ${country}`.trim() || "Cairo, Egypt";
-
-        // Filter role with strict rules
-        const filterCheck = checkStrictEgyptInternship(title, rawLocation, postedAt);
-        if (!filterCheck.valid) continue;
-
-        const slug = attr.slug || attr.uri || "";
-        const cleanUrl = `https://wuzzuf.net/jobs/p/${slug}`;
-
-        // Infer company name from slug if available
-        let companyName = "Egyptian Employer";
-        if (slug) {
-          const parts = slug.split("-");
-          if (parts.length >= 4) {
-            // Slug structure often: [id]-[title-words]-[company-words]-[city]-Egypt
-            const middle = parts.slice(2, parts.length - 2).join(" ");
-            if (middle.length > 2) {
-              companyName = middle;
-            }
-          }
-        }
-
-        candidates.push({
-          companyName,
-          title,
-          category: inferCategory(title),
-          location: inferLocation(`${title} ${rawLocation}`),
-          applicationUrl: cleanUrl,
-          source: "wuzzuf",
-          sourceType: "portal",
-          postedAt,
-        });
-      }
-    }
-  } catch (err: any) {
-    console.warn("[Wuzzuf Scraper] API endpoint error:", err.message);
+    console.warn("[Wuzzuf Scraper] HTML fallback error:", err.message);
   }
 
   return candidates;

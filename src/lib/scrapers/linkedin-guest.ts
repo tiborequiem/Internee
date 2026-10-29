@@ -13,9 +13,34 @@ const LINKEDIN_ENDPOINTS = [
     label: "keywords=Internship&location=Egypt",
   },
   {
-    url: "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Intern&location=Egypt&start=0",
+    url: "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Software%20Intern&location=Egypt&start=0",
     isExperienceFiltered: false,
-    label: "keywords=Intern&location=Egypt",
+    label: "keywords=Software Intern&location=Egypt",
+  },
+  {
+    url: "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Marketing%20Intern&location=Egypt&start=0",
+    isExperienceFiltered: false,
+    label: "keywords=Marketing Intern&location=Egypt",
+  },
+  {
+    url: "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Finance%20Intern&location=Egypt&start=0",
+    isExperienceFiltered: false,
+    label: "keywords=Finance Intern&location=Egypt",
+  },
+  {
+    url: "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=HR%20Intern&location=Egypt&start=0",
+    isExperienceFiltered: false,
+    label: "keywords=HR Intern&location=Egypt",
+  },
+  {
+    url: "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Trainee&location=Egypt&start=0",
+    isExperienceFiltered: false,
+    label: "keywords=Trainee&location=Egypt",
+  },
+  {
+    url: "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=Data%20Intern&location=Egypt&start=0",
+    isExperienceFiltered: false,
+    label: "keywords=Data Intern&location=Egypt",
   },
 ];
 
@@ -169,7 +194,7 @@ export async function scrapeLinkedInGuestEndpoint(endpoint: {
         category: inferCategory(title),
         location: inferLocation(`${title} ${rawLocation}`),
         applicationUrl: cleanUrl,
-        source: endpoint.isExperienceFiltered ? "linkedin_guest_f_E_1" : "linkedin_guest",
+        source: "linkedin",
         sourceType: "linkedin_post",
         postedAt,
       });
@@ -191,6 +216,7 @@ export async function runLinkedInGuestScraper() {
   for (const endpoint of LINKEDIN_ENDPOINTS) {
     const hits = await scrapeLinkedInGuestEndpoint(endpoint);
     allDiscovered.push(...hits);
+    await new Promise((r) => setTimeout(r, 350));
   }
 
   // Deduplicate by clean URL before upserting
