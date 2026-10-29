@@ -5,6 +5,9 @@ import { isStrictEgyptInternship } from "@/lib/internship-filter";
 import { upsertScrapedInternships, ScrapedInternshipInput } from "@/lib/queries";
 import { runDorkScanner } from "./dork-scanner";
 import { runLinkedInGuestScraper } from "./linkedin-guest";
+import { runWuzzufScraper } from "./wuzzuf";
+import { runAtsScrapers } from "./ats-apis";
+import { runIndeedGlassdoorScraper } from "./indeed-glassdoor";
 
 // Regex required by spec
 const TITLE_REGEX = /intern|trainee|graduate|academy|vodanation|rowad|student/i;
@@ -283,7 +286,7 @@ export async function runScrapers() {
     console.warn("Dork scanner error:", err);
   }
 
-  // 3. Execute LinkedIn Undocumented Guest Jobs Scraper (f_E=1)
+  // 3. Execute LinkedIn Undocumented Guest Jobs Scraper
   let linkedInResult = {
     endpointsChecked: 0,
     keywordsChecked: 0,
@@ -299,9 +302,45 @@ export async function runScrapers() {
     console.warn("LinkedIn guest scraper error:", err);
   }
 
-  const totalAdded = portalResult.added + dorkResult.added + linkedInResult.added;
+  // 4. Execute Wuzzuf Scraper
+  let wuzzufResult = { discovered: 0, added: 0, skipped: 0, rejectedByFilter: 0 };
+  try {
+    wuzzufResult = await runWuzzufScraper();
+  } catch (err) {
+    console.warn("Wuzzuf scraper error:", err);
+  }
+
+  // 5. Execute Workable & SmartRecruiters ATS Scraper
+  let atsResult = { discovered: 0, added: 0, skipped: 0, rejectedByFilter: 0 };
+  try {
+    atsResult = await runAtsScrapers();
+  } catch (err) {
+    console.warn("ATS scraper error:", err);
+  }
+
+  // 6. Execute Indeed & Glassdoor Scraper
+  let indeedGlassdoorResult = { discovered: 0, added: 0, skipped: 0, rejectedByFilter: 0 };
+  try {
+    indeedGlassdoorResult = await runIndeedGlassdoorScraper();
+  } catch (err) {
+    console.warn("Indeed/Glassdoor scraper error:", err);
+  }
+
+  const totalAdded =
+    portalResult.added +
+    dorkResult.added +
+    linkedInResult.added +
+    wuzzufResult.added +
+    atsResult.added +
+    indeedGlassdoorResult.added;
+
   const totalDiscovered =
-    allScrapedCandidates.length + dorkResult.validCandidates + linkedInResult.discovered;
+    allScrapedCandidates.length +
+    dorkResult.validCandidates +
+    linkedInResult.discovered +
+    wuzzufResult.discovered +
+    atsResult.discovered +
+    indeedGlassdoorResult.discovered;
 
   return {
     success: true,
@@ -313,11 +352,28 @@ export async function runScrapers() {
     dorkAdded: dorkResult.added,
     linkedInDiscovered: linkedInResult.discovered,
     linkedInAdded: linkedInResult.added,
+    wuzzufDiscovered: wuzzufResult.discovered,
+    wuzzufAdded: wuzzufResult.added,
+    atsDiscovered: atsResult.discovered,
+    atsAdded: atsResult.added,
+    indeedGlassdoorDiscovered: indeedGlassdoorResult.discovered,
+    indeedGlassdoorAdded: indeedGlassdoorResult.added,
     totalDiscovered,
     newRolesAdded: totalAdded,
-    existingSkipped: portalResult.skipped + dorkResult.skipped + linkedInResult.skipped,
+    existingSkipped:
+      portalResult.skipped +
+      dorkResult.skipped +
+      linkedInResult.skipped +
+      wuzzufResult.skipped +
+      atsResult.skipped +
+      indeedGlassdoorResult.skipped,
     rejectedByFilter:
-      portalResult.rejectedByFilter + dorkResult.rejectedByFilter + linkedInResult.rejectedByFilter,
+      portalResult.rejectedByFilter +
+      dorkResult.rejectedByFilter +
+      linkedInResult.rejectedByFilter +
+      wuzzufResult.rejectedByFilter +
+      atsResult.rejectedByFilter +
+      indeedGlassdoorResult.rejectedByFilter,
     details: reportDetails,
     timestamp: new Date().toISOString(),
   };

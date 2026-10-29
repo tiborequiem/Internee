@@ -40,12 +40,15 @@ const SECTORS = [
 
 const LOCATIONS = ["All", "Cairo", "Giza", "Alexandria", "Remote", "Hybrid"];
 
+const SOURCES = ["All", "LinkedIn", "Wuzzuf", "Indeed", "Glassdoor", "Workable", "Community"];
+
 export function InternshipExplorer({ initialInternships }: InternshipExplorerProps) {
   const [internshipsList, setInternshipsList] = useState<InternshipWithCompany[]>(initialInternships);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [selectedLocations, setSelectedLocations] = useState<string>("All");
   const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
+  const [selectedSource, setSelectedSource] = useState<string>("All");
   const [openOnly, setOpenOnly] = useState(false);
 
   // Scanner status & Terminal simulator
@@ -127,16 +130,31 @@ export function InternshipExplorer({ initialInternships }: InternshipExplorerPro
         return false;
       }
 
+      if (selectedSource !== "All") {
+        const srcLower = selectedSource.toLowerCase();
+        const itemSrc = (item.source || "").toLowerCase();
+        const itemUrl = (item.applicationUrl || "").toLowerCase();
+        const itemType = (item.sourceType || "").toLowerCase();
+        if (
+          !itemSrc.includes(srcLower) &&
+          !itemUrl.includes(srcLower) &&
+          !itemType.includes(srcLower)
+        ) {
+          return false;
+        }
+      }
+
       return true;
     });
-  }, [internshipsList, search, openOnly, selectedCategory, selectedLocations, selectedSectors]);
+  }, [internshipsList, search, openOnly, selectedCategory, selectedLocations, selectedSectors, selectedSource]);
 
   const hasActiveFilters =
     search !== "" ||
     openOnly ||
     selectedCategory !== "All Categories" ||
     selectedLocations !== "All" ||
-    selectedSectors.length > 0;
+    selectedSectors.length > 0 ||
+    selectedSource !== "All";
 
   const resetFilters = () => {
     setSearch("");
@@ -144,6 +162,7 @@ export function InternshipExplorer({ initialInternships }: InternshipExplorerPro
     setSelectedCategory("All Categories");
     setSelectedLocations("All");
     setSelectedSectors([]);
+    setSelectedSource("All");
   };
 
   return (
@@ -278,6 +297,29 @@ export function InternshipExplorer({ initialInternships }: InternshipExplorerPro
                   }`}
                 >
                   {loc}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Source Pills */}
+          <div className="space-y-2 pt-2 border-t border-[#313244]">
+            <span className="text-[11px] uppercase tracking-wider text-[#a6adc8] font-semibold block">
+              Source
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {SOURCES.map((src) => (
+                <button
+                  key={src}
+                  type="button"
+                  onClick={() => setSelectedSource(src)}
+                  className={`px-2 py-0.5 rounded text-[11px] transition-colors border ${
+                    selectedSource === src
+                      ? "bg-[#313244] text-[#cdd6f4] border-[#cba6f7]/60"
+                      : "bg-[#181825] text-[#a6adc8] border-[#45475a] hover:text-[#cdd6f4]"
+                  }`}
+                >
+                  {src}
                 </button>
               ))}
             </div>

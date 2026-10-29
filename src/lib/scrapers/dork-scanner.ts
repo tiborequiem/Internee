@@ -14,6 +14,8 @@ const DORK_QUERIES = [
   'site:docs.google.com/forms ("Internship" OR "Summer Training" OR "Intern" OR "تدريب") ("Egypt" OR "Cairo" OR "GUC" OR "AUC" OR "Ain Shams" OR "Cairo University")',
   'site:instagram.com/p/ ("internship" OR "hiring interns") ("Egypt" OR "Cairo")',
   'site:tiktok.com ("internship" OR "تدريب") ("Egypt" OR "Cairo")',
+  'site:eg.indeed.com ("Intern" OR "Internship" OR "Summer 2027" OR "Winter Internship") ("Cairo" OR "Giza" OR "Egypt")',
+  'site:glassdoor.com/job-listing ("Intern" OR "Internship") ("Cairo" OR "Egypt")',
 ];
 
 export function detectSourceType(url: string): "portal" | "linkedin_post" | "google_form" | "tiktok" | "instagram" {
@@ -124,13 +126,20 @@ export function parseSearchResultToInternship(hit: SearchHit): ScrapedInternship
     return null;
   }
 
+  let source = "dork";
+  const lowerLink = link.toLowerCase();
+  if (lowerLink.includes("indeed.com")) source = "indeed";
+  else if (lowerLink.includes("glassdoor.com")) source = "glassdoor";
+  else if (lowerLink.includes("wuzzuf.net")) source = "wuzzuf";
+  else if (lowerLink.includes("linkedin.com")) source = "linkedin";
+
   return {
     companyName,
     title: cleanTitle,
     category,
     location,
     applicationUrl: link,
-    source: "dork",
+    source,
     sourceType,
     postedAt: now,
   };

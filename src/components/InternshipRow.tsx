@@ -40,43 +40,83 @@ export function InternshipRow({ internship }: InternshipRowProps) {
   };
 
   // Source type badge styling adhering to Catppuccin Mocha
-  const sourceType = internship.sourceType || "portal";
   const renderSourceBadge = () => {
-    switch (sourceType) {
-      case "linkedin_post":
-        return (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#74c7ec]/15 text-[#74c7ec] border border-[#74c7ec]/35">
-            <Linkedin className="w-2.5 h-2.5" />
-            <span>LinkedIn</span>
-          </span>
-        );
-      case "google_form":
-        return (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#fab387]/15 text-[#fab387] border border-[#fab387]/35">
-            <FileSpreadsheet className="w-2.5 h-2.5" />
-            <span>Google Form</span>
-          </span>
-        );
-      case "tiktok":
-        return (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#f5c2e7]/15 text-[#f5c2e7] border border-[#f5c2e7]/35">
-            <span>TikTok</span>
-          </span>
-        );
-      case "instagram":
-        return (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#f5c2e7]/15 text-[#f5c2e7] border border-[#f5c2e7]/35">
-            <span>Instagram</span>
-          </span>
-        );
-      default:
-        return (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#94e2d5]/15 text-[#94e2d5] border border-[#94e2d5]/35">
-            <Globe className="w-2.5 h-2.5" />
-            <span>Portal</span>
-          </span>
-        );
+    const src = (internship.source || "").toLowerCase();
+    const url = (internship.applicationUrl || "").toLowerCase();
+    const st = (internship.sourceType || "").toLowerCase();
+
+    if (src === "wuzzuf" || url.includes("wuzzuf.net")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#89b4fa]/15 text-[#89b4fa] border border-[#89b4fa]/35">
+          <span>Wuzzuf</span>
+        </span>
+      );
     }
+    if (src === "indeed" || url.includes("indeed.com")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#fab387]/15 text-[#fab387] border border-[#fab387]/35">
+          <span>Indeed</span>
+        </span>
+      );
+    }
+    if (src === "glassdoor" || url.includes("glassdoor.com")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#a6e3a1]/15 text-[#a6e3a1] border border-[#a6e3a1]/35">
+          <span>Glassdoor</span>
+        </span>
+      );
+    }
+    if (src === "workable" || url.includes("workable.com") || url.includes("smartrecruiters.com")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#94e2d5]/15 text-[#94e2d5] border border-[#94e2d5]/35">
+          <span>Workable</span>
+        </span>
+      );
+    }
+    if (src.includes("linkedin") || st === "linkedin_post" || url.includes("linkedin.com")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#74c7ec]/15 text-[#74c7ec] border border-[#74c7ec]/35">
+          <Linkedin className="w-2.5 h-2.5" />
+          <span>LinkedIn</span>
+        </span>
+      );
+    }
+    if (src === "community" || src === "community_drop") {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#cba6f7]/15 text-[#cba6f7] border border-[#cba6f7]/35">
+          <span>Community</span>
+        </span>
+      );
+    }
+    if (st === "google_form" || url.includes("docs.google.com/forms")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#fab387]/15 text-[#fab387] border border-[#fab387]/35">
+          <FileSpreadsheet className="w-2.5 h-2.5" />
+          <span>Google Form</span>
+        </span>
+      );
+    }
+    if (st === "tiktok" || url.includes("tiktok.com")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#f5c2e7]/15 text-[#f5c2e7] border border-[#f5c2e7]/35">
+          <span>TikTok</span>
+        </span>
+      );
+    }
+    if (st === "instagram" || url.includes("instagram.com")) {
+      return (
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#f5c2e7]/15 text-[#f5c2e7] border border-[#f5c2e7]/35">
+          <span>Instagram</span>
+        </span>
+      );
+    }
+
+    return (
+      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#94e2d5]/15 text-[#94e2d5] border border-[#94e2d5]/35">
+        <Globe className="w-2.5 h-2.5" />
+        <span>Portal</span>
+      </span>
+    );
   };
 
   return (

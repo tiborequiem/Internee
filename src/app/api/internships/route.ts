@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
   const location = searchParams.get("location") || undefined;
   const status = searchParams.get("status") || undefined;
   const search = searchParams.get("search") || undefined;
+  const source = searchParams.get("source") || undefined;
 
   try {
     const list = await getPublicInternships({
@@ -18,6 +19,7 @@ export async function GET(request: NextRequest) {
       location,
       status,
       search,
+      source,
     });
     return NextResponse.json(list);
   } catch (err: any) {

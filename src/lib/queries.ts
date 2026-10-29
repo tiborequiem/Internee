@@ -9,6 +9,7 @@ export interface PublicInternshipFilters {
   location?: string;
   status?: string;
   search?: string;
+  source?: string;
 }
 
 export interface ScrapedInternshipInput {
@@ -50,6 +51,10 @@ export async function getPublicInternships(
 
   if (filters.sector && filters.sector !== "all") {
     conditions.push(eq(companies.sector, filters.sector));
+  }
+
+  if (filters.source && filters.source !== "all") {
+    conditions.push(like(internships.source, `%${filters.source.toLowerCase()}%`));
   }
 
   if (filters.search && filters.search.trim() !== "") {

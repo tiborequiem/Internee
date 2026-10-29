@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
+    "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.38.4",
     "framer-motion": "^14.8.0",
