@@ -1,12 +1,16 @@
 {
-  "name": "egypt-internships-tracker",
+  "name": "internee",
   "version": "0.1.0",
+  "description": "High-signal Egypt internship discovery engine & tracker with dual-endpoint LinkedIn Guest, Wuzzuf XML, and ATS scrapers.",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "tsx scripts/test-all.ts",
+    "test:api": "tsx scripts/test-api-routes.ts",
+    "scrape": "tsx -e 'import { runScrapers } from \"./src/lib/scrapers\"; runScrapers().then(console.log);'",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx src/db/seed.ts"
   },
