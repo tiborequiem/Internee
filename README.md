@@ -25,7 +25,7 @@ Internee is an automated discovery engine, quality gate, and high-density deskto
                       • Upsert deduplication by clean URL
                       • Self-healing on empty database
                                      ▼
-                      [Anti-Slop Catppuccin Mocha UI]
+                      [Catppuccin Mocha Desktop UI]
                       • Density-optimized desktop workspace
                       • Keyboard navigation (/, j, k, Enter)
                       • Client-side application status tracking
@@ -67,10 +67,10 @@ Many Egyptian startups, student clubs, and tech teams hire via LinkedIn feed pos
 - **1-Click Local Drop:** Automatically submits candidate URLs to the tracker backend via `/api/community/quick-drop`.
 - **Local Deduplication:** Caches seen URLs in `chrome.storage.local` to prevent duplicate submissions.
 
-### 6. Anti-Slop, High-Density Desktop UI
-The web application is designed with an editorial, CLI-grade aesthetic inspired by Linear and GitHub:
+### 6. High-Density, Keyboard-Driven Desktop UI
+The web application features an editorial desktop interface inspired by Linear and GitHub:
 - **Catppuccin Mocha Palette:** Base canvas `#1e1e2e`, mantle `#181825`, borders `#313244`, text `#cdd6f4`, mauve accent `#cba6f7`.
-- **Zero Emojis & Zero Marketing Fluff:** No patronizing explainers, no decorative pulsing dots, no nested card clutter.
+- **Editorial Density:** Flat layout directly on the canvas without visual noise or nested card containers.
 - **Keyboard Navigation:** Press `/` to focus the search filter, `j` and `k` to navigate row selections, and `Enter` to open the active role in a new browser tab.
 - **Client-Side Application Tracking:** Local browser persistence tracks each role across stages: `Saved` &rarr; `Applied` &rarr; `Interviewing`.
 
