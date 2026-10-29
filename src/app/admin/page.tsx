@@ -138,20 +138,20 @@ export default function AdminPage() {
     return (
       <div className="max-w-sm mx-auto py-16 space-y-4 font-mono text-xs">
         <div className="space-y-1 text-center">
-          <Shield className="w-5 h-5 text-[#D97757] mx-auto" />
-          <h1 className="font-sans text-lg font-semibold text-[#ECECEC]">Admin Moderation</h1>
-          <p className="text-[#8E8D8A]">Enter ADMIN_SECRET passcode.</p>
+          <Shield className="w-5 h-5 text-[#cba6f7] mx-auto" />
+          <h1 className="font-sans text-lg font-semibold text-[#cdd6f4]">Admin Moderation</h1>
+          <p className="text-[#a6adc8]">Enter ADMIN_SECRET passcode.</p>
         </div>
 
         {statusMessage && (
-          <div className="p-3 rounded bg-[#161614] border border-rose-500/30 text-rose-400 text-xs">
+          <div className="p-3 rounded bg-[#181825] border border-[#f38ba8]/40 text-[#f38ba8] text-xs">
             {statusMessage.text}
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="bg-[#161614] border border-[#262624] rounded-lg p-4 space-y-3">
+        <form onSubmit={handleLogin} className="bg-[#181825] border border-[#45475a] rounded-lg p-4 space-y-3 shadow-xl">
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-wider text-[#8E8D8A] font-semibold block">
+            <label className="text-[10px] uppercase tracking-wider text-[#a6adc8] font-semibold block">
               Passcode
             </label>
             <input
@@ -160,14 +160,14 @@ export default function AdminPage() {
               value={adminSecret}
               onChange={(e) => setAdminSecret(e.target.value)}
               placeholder="Enter passcode..."
-              className="w-full bg-[#0D0D0C] border border-[#262624] focus:border-[#383834] rounded px-3 py-1.5 text-[#ECECEC] focus:outline-none"
+              className="w-full bg-[#11111b] border border-[#313244] focus:border-[#cba6f7] rounded px-3 py-1.5 text-[#cdd6f4] focus:outline-none"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 rounded bg-[#D97757] hover:bg-[#C86B4D] text-[#ECECEC] font-sans font-medium transition-colors disabled:opacity-50"
+            className="w-full py-2 rounded bg-[#cba6f7] hover:bg-[#b4befe] text-[#11111b] font-sans font-semibold transition-colors disabled:opacity-50"
           >
             {loading ? "Verifying..." : "Unlock"}
           </button>
@@ -179,12 +179,12 @@ export default function AdminPage() {
   return (
     <div className="space-y-6 font-mono text-xs">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#262624] pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#45475a] pb-4">
         <div>
-          <h1 className="font-sans text-base font-semibold text-[#ECECEC]">
+          <h1 className="font-sans text-base font-semibold text-[#cdd6f4]">
             Community Moderation Queue
           </h1>
-          <p className="text-[11px] text-[#8E8D8A]">
+          <p className="text-[11px] text-[#a6adc8]">
             One-click approve or reject student submissions.
           </p>
         </div>
@@ -193,16 +193,16 @@ export default function AdminPage() {
           <button
             onClick={handleTriggerScraper}
             disabled={scraping}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#161614] hover:bg-[#1E1E1C] border border-[#262624] text-[#ECECEC] transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#313244] hover:bg-[#45475a] border border-[#45475a] text-[#cdd6f4] transition-colors disabled:opacity-50"
           >
-            <Bot className={`w-3.5 h-3.5 ${scraping ? "animate-spin" : ""}`} />
+            <Bot className={`w-3.5 h-3.5 text-[#cba6f7] ${scraping ? "animate-spin" : ""}`} />
             <span>{scraping ? "Crawling..." : "Trigger Crawler"}</span>
           </button>
 
           <button
             onClick={() => verifyAndFetch(adminSecret)}
             disabled={loading}
-            className="p-1.5 rounded bg-[#161614] border border-[#262624] text-[#8E8D8A] hover:text-[#ECECEC]"
+            className="p-1.5 rounded bg-[#313244] border border-[#45475a] text-[#a6adc8] hover:text-[#cdd6f4]"
             title="Refresh"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
@@ -210,7 +210,7 @@ export default function AdminPage() {
 
           <button
             onClick={handleLogout}
-            className="px-2.5 py-1.5 rounded bg-[#161614] border border-rose-500/30 text-rose-400 hover:bg-rose-500/10"
+            className="px-2.5 py-1.5 rounded bg-[#181825] border border-[#f38ba8]/40 text-[#f38ba8] hover:bg-[#f38ba8]/15"
           >
             Lock
           </button>
@@ -221,8 +221,8 @@ export default function AdminPage() {
         <div
           className={`p-3 rounded border text-xs ${
             statusMessage.type === "success"
-              ? "bg-[#161614] border-[#4ADE80]/30 text-[#4ADE80]"
-              : "bg-[#161614] border-rose-500/30 text-rose-400"
+              ? "bg-[#181825] border-[#a6e3a1]/40 text-[#a6e3a1]"
+              : "bg-[#181825] border-[#f38ba8]/40 text-[#f38ba8]"
           }`}
         >
           {statusMessage.text}
@@ -230,30 +230,30 @@ export default function AdminPage() {
       )}
 
       {/* Moderation Queue Table */}
-      <div className="border border-[#262624] rounded-lg bg-[#0D0D0C] overflow-hidden">
-        <div className="py-2.5 px-4 bg-[#161614] border-b border-[#262624] flex items-center justify-between text-[11px] text-[#8E8D8A]">
+      <div className="border border-[#45475a] rounded-lg bg-[#181825] overflow-hidden shadow-xl">
+        <div className="py-2.5 px-4 bg-[#11111b] border-b border-[#45475a] flex items-center justify-between text-[11px] text-[#a6adc8]">
           <span>PENDING SUBMISSIONS ({pendingList.length})</span>
         </div>
 
         {pendingList.length === 0 ? (
-          <div className="py-16 text-center text-[#8E8D8A]">
-            <CheckCircle2 className="w-5 h-5 text-[#4ADE80] mx-auto mb-2" />
+          <div className="py-16 text-center text-[#a6adc8]">
+            <CheckCircle2 className="w-5 h-5 text-[#a6e3a1] mx-auto mb-2" />
             <p className="text-xs">Queue is clear. No pending community submissions.</p>
           </div>
         ) : (
-          <div className="divide-y divide-[#222220]">
+          <div className="divide-y divide-[#313244]">
             {pendingList.map((item) => (
               <div
                 key={item.id}
-                className="py-3 px-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#161614] transition-colors"
+                className="py-3 px-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#313244]/40 transition-colors"
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[#8E8D8A]">{item.company.name}</span>
-                    <span className="text-[#262624]">/</span>
-                    <span className="text-[#ECECEC] font-sans font-medium">{item.title}</span>
+                    <span className="text-[#a6adc8]">{item.company.name}</span>
+                    <span className="text-[#45475a]">/</span>
+                    <span className="text-[#cdd6f4] font-sans font-medium">{item.title}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-[11px] text-[#8E8D8A]">
+                  <div className="flex items-center gap-3 text-[11px] text-[#a6adc8]">
                     <span>{item.category}</span>
                     <span>•</span>
                     <span>{item.location}</span>
@@ -267,7 +267,7 @@ export default function AdminPage() {
                     href={item.applicationUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1 text-[#8E8D8A] hover:text-[#ECECEC]"
+                    className="p-1 text-[#a6adc8] hover:text-[#cdd6f4]"
                     title="Open link"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -275,14 +275,14 @@ export default function AdminPage() {
 
                   <button
                     onClick={() => handleModerate(item.id, "approve")}
-                    className="px-2.5 py-1 rounded bg-[#4ADE80]/20 text-[#4ADE80] border border-[#4ADE80]/40 hover:bg-[#4ADE80]/30 transition-colors font-medium"
+                    className="px-2.5 py-1 rounded bg-[#a6e3a1]/20 text-[#a6e3a1] border border-[#a6e3a1]/40 hover:bg-[#a6e3a1]/30 transition-colors font-medium"
                   >
                     Approve
                   </button>
 
                   <button
                     onClick={() => handleModerate(item.id, "reject")}
-                    className="px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/40 hover:bg-rose-500/30 transition-colors"
+                    className="px-2.5 py-1 rounded bg-[#f38ba8]/20 text-[#f38ba8] border border-[#f38ba8]/40 hover:bg-[#f38ba8]/30 transition-colors"
                   >
                     Reject
                   </button>

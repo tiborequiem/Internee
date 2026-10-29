@@ -52,31 +52,31 @@ export function QuickDropBar({ onSuccess }: QuickDropBarProps) {
     <div className="w-full space-y-2">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 rounded-lg bg-[#161614] border border-[#262624] focus-within:border-[#383834] transition-colors"
+        className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 rounded-lg bg-[#181825] border border-[#45475a] focus-within:border-[#cba6f7] transition-colors"
       >
         {/* URL Input */}
         <div className="relative flex-1 flex items-center">
-          <Link2 className="w-4 h-4 text-[#8E8D8A] ml-2.5 flex-shrink-0" />
+          <Link2 className="w-4 h-4 text-[#a6adc8] ml-2.5 flex-shrink-0" />
           <input
             type="url"
             required
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="Drop a LinkedIn post, Google Form, TikTok, IG Reel, or careers URL..."
-            className="w-full bg-transparent px-3 py-1.5 text-xs text-[#ECECEC] placeholder-[#8E8D8A]/50 focus:outline-none font-mono"
+            className="w-full bg-transparent px-3 py-1.5 text-xs text-[#cdd6f4] placeholder-[#6c7086] focus:outline-none font-mono"
           />
         </div>
 
         {/* Optional Credit Handle */}
-        <div className="relative sm:w-36 flex items-center border-t sm:border-t-0 sm:border-l border-[#262624] pt-1.5 sm:pt-0 sm:pl-1">
-          <AtSign className="w-3.5 h-3.5 text-[#8E8D8A] ml-2 flex-shrink-0" />
+        <div className="relative sm:w-36 flex items-center border-t sm:border-t-0 sm:border-l border-[#45475a] pt-1.5 sm:pt-0 sm:pl-1">
+          <AtSign className="w-3.5 h-3.5 text-[#a6adc8] ml-2 flex-shrink-0" />
           <input
             type="text"
             value={handle}
             onChange={(e) => setHandle(e.target.value)}
             placeholder="handle"
             title="Optional @handle for credit"
-            className="w-full bg-transparent px-2 py-1.5 text-xs text-[#ECECEC] placeholder-[#8E8D8A]/50 focus:outline-none font-mono"
+            className="w-full bg-transparent px-2 py-1.5 text-xs text-[#cdd6f4] placeholder-[#6c7086] focus:outline-none font-mono"
           />
         </div>
 
@@ -84,7 +84,7 @@ export function QuickDropBar({ onSuccess }: QuickDropBarProps) {
         <button
           type="submit"
           disabled={loading || !url.trim()}
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded bg-[#D97757] hover:bg-[#C86B4D] text-[#ECECEC] text-xs font-mono font-medium transition-colors disabled:opacity-50 flex-shrink-0"
+          className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded bg-[#cba6f7] hover:bg-[#b4befe] text-[#11111b] text-xs font-mono font-semibold transition-colors disabled:opacity-50 flex-shrink-0 shadow-md shadow-[#cba6f7]/20"
         >
           {loading ? (
             <>
@@ -109,19 +109,19 @@ export function QuickDropBar({ onSuccess }: QuickDropBarProps) {
             exit={{ opacity: 0, y: -4 }}
             className={`p-2 rounded text-[11px] font-mono flex items-center gap-2 border ${
               message.type === "success"
-                ? "bg-[#161614] border-[#4ADE80]/30 text-[#4ADE80]"
-                : "bg-[#161614] border-rose-500/30 text-rose-400"
+                ? "bg-[#181825] border-[#a6e3a1]/40 text-[#a6e3a1]"
+                : "bg-[#181825] border-[#f38ba8]/40 text-[#f38ba8]"
             }`}
           >
             {message.type === "success" ? (
-              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 text-[#a6e3a1]" />
             ) : (
-              <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+              <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 text-[#f38ba8]" />
             )}
             <span className="flex-1">{message.text}</span>
             <button
               onClick={() => setMessage(null)}
-              className="text-[#8E8D8A] hover:text-[#ECECEC] text-[10px]"
+              className="text-[#a6adc8] hover:text-[#cdd6f4] text-[10px]"
             >
               ✕
             </button>

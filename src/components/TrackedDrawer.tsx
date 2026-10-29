@@ -43,32 +43,32 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#0D0D0C] border-l border-[#262624] shadow-2xl flex flex-col text-[#ECECEC]">
+        <div className="w-screen max-w-md bg-[#1e1e2e] border-l border-[#45475a] shadow-2xl flex flex-col text-[#cdd6f4]">
           {/* Header */}
-          <div className="p-4 border-b border-[#262624] flex items-center justify-between bg-[#161614]">
+          <div className="p-4 border-b border-[#45475a] flex items-center justify-between bg-[#181825]">
             <div className="flex items-center gap-2">
-              <Bookmark className="w-4 h-4 text-[#D97757]" />
-              <h2 className="text-sm font-semibold text-[#ECECEC]">Saved Applications</h2>
-              <span className="text-[11px] font-mono text-[#8E8D8A]">
+              <Bookmark className="w-4 h-4 text-[#cba6f7]" />
+              <h2 className="text-sm font-semibold text-[#cdd6f4]">Saved Applications</h2>
+              <span className="text-[11px] font-mono text-[#a6adc8]">
                 ({trackedInternshipIds.length})
               </span>
             </div>
             <button
               onClick={onClose}
-              className="p-1 rounded text-[#8E8D8A] hover:text-[#ECECEC] hover:bg-[#222220]"
+              className="p-1 rounded text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-[#313244]"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* Filter Tabs */}
-          <div className="px-4 pt-2 border-b border-[#262624] flex gap-2 font-mono text-xs">
+          <div className="px-4 pt-2 border-b border-[#45475a] flex gap-2 font-mono text-xs bg-[#181825]">
             <button
               onClick={() => setActiveTab("all")}
               className={`pb-2 px-1 border-b-2 transition-colors flex items-center gap-1.5 ${
                 activeTab === "all"
-                  ? "border-[#D97757] text-[#ECECEC] font-bold"
-                  : "border-transparent text-[#8E8D8A] hover:text-[#ECECEC]"
+                  ? "border-[#cba6f7] text-[#cdd6f4] font-bold"
+                  : "border-transparent text-[#a6adc8] hover:text-[#cdd6f4]"
               }`}
             >
               All <span>({countByStatus.all})</span>
@@ -77,8 +77,8 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
               onClick={() => setActiveTab("saved")}
               className={`pb-2 px-1 border-b-2 transition-colors flex items-center gap-1.5 ${
                 activeTab === "saved"
-                  ? "border-[#D97757] text-[#ECECEC] font-bold"
-                  : "border-transparent text-[#8E8D8A] hover:text-[#ECECEC]"
+                  ? "border-[#cba6f7] text-[#cba6f7] font-bold"
+                  : "border-transparent text-[#a6adc8] hover:text-[#cdd6f4]"
               }`}
             >
               Saved <span>({countByStatus.saved})</span>
@@ -87,8 +87,8 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
               onClick={() => setActiveTab("applied")}
               className={`pb-2 px-1 border-b-2 transition-colors flex items-center gap-1.5 ${
                 activeTab === "applied"
-                  ? "border-blue-400 text-[#ECECEC] font-bold"
-                  : "border-transparent text-[#8E8D8A] hover:text-[#ECECEC]"
+                  ? "border-[#74c7ec] text-[#74c7ec] font-bold"
+                  : "border-transparent text-[#a6adc8] hover:text-[#cdd6f4]"
               }`}
             >
               Applied <span>({countByStatus.applied})</span>
@@ -97,8 +97,8 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
               onClick={() => setActiveTab("interviewing")}
               className={`pb-2 px-1 border-b-2 transition-colors flex items-center gap-1.5 ${
                 activeTab === "interviewing"
-                  ? "border-purple-400 text-[#ECECEC] font-bold"
-                  : "border-transparent text-[#8E8D8A] hover:text-[#ECECEC]"
+                  ? "border-[#b4befe] text-[#b4befe] font-bold"
+                  : "border-transparent text-[#a6adc8] hover:text-[#cdd6f4]"
               }`}
             >
               Interviewing <span>({countByStatus.interviewing})</span>
@@ -109,8 +109,8 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
           <div className="flex-1 overflow-y-auto p-4 space-y-3 font-mono">
             {trackedList.length === 0 ? (
               <div className="py-16 text-center space-y-2">
-                <Bookmark className="w-6 h-6 text-[#8E8D8A]/50 mx-auto" />
-                <p className="text-xs text-[#8E8D8A]">
+                <Bookmark className="w-6 h-6 text-[#a6adc8]/40 mx-auto" />
+                <p className="text-xs text-[#a6adc8]">
                   No {activeTab !== "all" ? activeTab : "tracked"} internships saved in this browser.
                 </p>
               </div>
@@ -118,34 +118,34 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
               trackedList.map((item) => (
                 <div
                   key={item.id}
-                  className="p-3 rounded border border-[#262624] bg-[#161614] hover:border-[#383834] transition-colors space-y-2.5 text-xs"
+                  className="p-3 rounded border border-[#45475a] bg-[#181825] hover:border-[#cba6f7]/50 transition-colors space-y-2.5 text-xs shadow-lg"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="text-[10px] text-[#8E8D8A] block">
+                      <span className="text-[10px] text-[#a6adc8] block">
                         {item.company.name}
                       </span>
-                      <h4 className="font-sans font-medium text-sm text-[#ECECEC] leading-snug">
+                      <h4 className="font-sans font-medium text-sm text-[#cdd6f4] leading-snug">
                         {item.title}
                       </h4>
                     </div>
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="p-1 text-[#8E8D8A] hover:text-rose-400"
+                      className="p-1 text-[#a6adc8] hover:text-[#f38ba8]"
                       title="Untrack role"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#222220]">
+                  <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#313244]">
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => setItemStatus(item.id, "saved")}
                         className={`px-1.5 py-0.5 rounded text-[10px] border transition-colors ${
                           item.userStatus === "saved"
-                            ? "bg-[#D97757]/20 text-[#D97757] border-[#D97757]"
-                            : "bg-[#0D0D0C] text-[#8E8D8A] border-[#222220]"
+                            ? "bg-[#cba6f7]/20 text-[#cba6f7] border-[#cba6f7]"
+                            : "bg-[#11111b] text-[#a6adc8] border-[#313244]"
                         }`}
                       >
                         Saved
@@ -154,8 +154,8 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
                         onClick={() => setItemStatus(item.id, "applied")}
                         className={`px-1.5 py-0.5 rounded text-[10px] border transition-colors ${
                           item.userStatus === "applied"
-                            ? "bg-blue-500/20 text-blue-400 border-blue-400"
-                            : "bg-[#0D0D0C] text-[#8E8D8A] border-[#222220]"
+                            ? "bg-[#74c7ec]/20 text-[#74c7ec] border-[#74c7ec]"
+                            : "bg-[#11111b] text-[#a6adc8] border-[#313244]"
                         }`}
                       >
                         Applied
@@ -164,8 +164,8 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
                         onClick={() => setItemStatus(item.id, "interviewing")}
                         className={`px-1.5 py-0.5 rounded text-[10px] border transition-colors ${
                           item.userStatus === "interviewing"
-                            ? "bg-purple-500/20 text-purple-400 border-purple-400"
-                            : "bg-[#0D0D0C] text-[#8E8D8A] border-[#222220]"
+                            ? "bg-[#b4befe]/20 text-[#b4befe] border-[#b4befe]"
+                            : "bg-[#11111b] text-[#a6adc8] border-[#313244]"
                         }`}
                       >
                         Interviewing
@@ -176,7 +176,7 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
                       href={item.applicationUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[#8E8D8A] hover:text-[#ECECEC]"
+                      className="inline-flex items-center gap-1 text-[#a6adc8] hover:text-[#cba6f7]"
                     >
                       <span>Apply</span>
                       <ArrowUpRight className="w-3 h-3" />
@@ -189,11 +189,11 @@ export function TrackedDrawer({ isOpen, onClose, allInternships }: TrackedDrawer
 
           {/* Drawer Footer */}
           {trackedInternshipIds.length > 0 && (
-            <div className="p-3 border-t border-[#262624] bg-[#161614] flex items-center justify-between text-xs font-mono text-[#8E8D8A]">
+            <div className="p-3 border-t border-[#45475a] bg-[#181825] flex items-center justify-between text-xs font-mono text-[#a6adc8]">
               <span>Browser localStorage</span>
               <button
                 onClick={clearAll}
-                className="text-rose-400 hover:text-rose-300"
+                className="text-[#f38ba8] hover:text-[#eba0ac]"
               >
                 Clear all
               </button>

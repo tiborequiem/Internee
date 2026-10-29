@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { companies, internships, Company, InternshipWithCompany } from "@/db/schema";
 import { eq, ne, and, or, like, desc, sql } from "drizzle-orm";
-import { isStrictEgyptInternship } from "@/lib/internship-filter";
+import { isStrictEgyptInternship, checkStrictEgyptInternship } from "@/lib/internship-filter";
 
 export interface PublicInternshipFilters {
   sector?: string;
@@ -214,9 +214,25 @@ export async function upsertScrapedInternships(
   let rejectedByFilter = 0;
 
   for (const item of items) {
-    // 1. Strict filter enforcement
+    // 1. Strict filter enforcement with diagnostic logging
     const isExperienceFiltered = item.source === "linkedin_guest_f_E_1";
-    if (!isStrictEgyptInternship(item.title, item.location, item.postedAt, isExperienceFiltered)) {
+    const filterCheck = checkStrictEgyptInternship(
+      item.title,
+      item.location,
+      item.postedAt,
+      isExperienceFiltered
+    );
+
+    console.log("[Scraper Candidate]", {
+      title: item.title,
+      company: item.companyName || item.companySlug || "Unknown",
+      location: item.location,
+      url: item.applicationUrl,
+      valid: filterCheck.valid,
+      ...(filterCheck.reason ? { rejectReason: filterCheck.reason } : {}),
+    });
+
+    if (!filterCheck.valid) {
       rejectedByFilter++;
       continue;
     }
@@ -236,29 +252,40 @@ export async function upsertScrapedInternships(
 
     if (!companyId) {
       const cleanName = (item.companyName || item.companySlug || "Egyptian Employer").trim();
-      const slug = cleanName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "") || `company-${Date.now()}`;
+      const baseSlug =
+        cleanName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "") || `company-${Date.now()}`;
+
       let comp = await db
         .select()
         .from(companies)
-        .where(or(eq(companies.name, cleanName), eq(companies.slug, slug)))
+        .where(or(eq(companies.name, cleanName), eq(companies.slug, baseSlug)))
         .get();
 
       if (!comp) {
+        // Avoid unique slug collisions
+        let finalSlug = baseSlug;
+        const collisionCheck = await db
+          .select()
+          .from(companies)
+          .where(eq(companies.slug, finalSlug))
+          .get();
+        if (collisionCheck) {
+          finalSlug = `${baseSlug}-${Math.random().toString(36).substring(2, 6)}`;
+        }
+
         comp = await db
           .insert(companies)
           .values({
             name: cleanName,
-            slug,
-            sector:
-              item.category === "Finance"
-                ? "Banking & Fintech"
-                : item.category === "Engineering"
-                ? "Engineering"
-                : "Tech",
+            slug: finalSlug,
+            sector: "Tech & Software",
             careersUrl: item.applicationUrl,
             scraperType: "manual",
             typicalSeason: "Summer Intake",
-            logoUrl: `https://avatar.vercel.sh/${slug}.svg?text=${encodeURIComponent(
+            logoUrl: `https://avatar.vercel.sh/${encodeURIComponent(finalSlug)}.svg?text=${encodeURIComponent(
               cleanName.substring(0, 2).toUpperCase()
             )}`,
             lastCheckedAt: Date.now(),

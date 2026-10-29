@@ -3,6 +3,12 @@
   "name": "Internee Scout 🇪🇬 | Feed Internship Detector",
   "version": "1.0.0",
   "description": "Auto-scouts and self-reports Egyptian student internships while browsing LinkedIn and X (Twitter) feeds.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "internee-scout@egypt.local",
+      "strict_min_version": "109.0"
+    }
+  },
   "permissions": [
     "storage"
   ],
@@ -11,6 +17,7 @@
     "https://*.x.com/*",
     "https://*.twitter.com/*",
     "http://localhost:3000/*",
+    "http://127.0.0.1:3000/*",
     "https://*/*"
   ],
   "action": {

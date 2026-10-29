@@ -36,11 +36,11 @@
     }
 
     const toast = document.createElement("div");
-    toast.style.background = "#161614";
-    toast.style.border = "1px solid #262624";
+    toast.style.background = "#181825";
+    toast.style.border = "1px solid #45475a";
     toast.style.borderRadius = "8px";
     toast.style.padding = "10px 14px";
-    toast.style.color = "#ECECEC";
+    toast.style.color = "#cdd6f4";
     toast.style.fontFamily = "ui-monospace, monospace";
     toast.style.fontSize = "11px";
     toast.style.boxShadow = "0 8px 24px rgba(0,0,0,0.5)";
@@ -51,10 +51,10 @@
     toast.style.pointerEvents = "auto";
 
     toast.innerHTML = `
-      <span style="color:#D97757; font-size:14px;">🎯</span>
+      <span style="color:#cba6f7; font-size:14px;">🎯</span>
       <div>
-        <div style="font-weight:600; color:#ECECEC;">${title}</div>
-        <div style="color:#8E8D8A; font-size:10px; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${message}</div>
+        <div style="font-weight:600; color:#cdd6f4;">${title}</div>
+        <div style="color:#a6adc8; font-size:10px; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${message}</div>
       </div>
     `;
 

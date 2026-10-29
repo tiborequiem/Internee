@@ -285,6 +285,7 @@ export async function runScrapers() {
 
   // 3. Execute LinkedIn Undocumented Guest Jobs Scraper (f_E=1)
   let linkedInResult = {
+    endpointsChecked: 0,
     keywordsChecked: 0,
     discovered: 0,
     added: 0,

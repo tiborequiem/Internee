@@ -1,6 +1,8 @@
 # Internee Scout 🇪🇬 — Feed Internship Detector Extension
 
-A lightweight, privacy-friendly Manifest V3 browser extension for Google Chrome, Brave, Edge, and Arc that passively scouts and self-reports Egyptian internship opportunities while you scroll LinkedIn and X (Twitter).
+A lightweight, privacy-friendly WebExtension for **Zen Browser**, **Firefox**, **Google Chrome**, **Brave**, **Edge**, and **Arc** that passively scouts and self-reports Egyptian internship opportunities while you scroll LinkedIn and X (Twitter).
+
+Styled in authentic **Catppuccin Mocha** palette.
 
 ---
 
@@ -11,25 +13,45 @@ A lightweight, privacy-friendly Manifest V3 browser extension for Google Chrome,
    - Monitors your feed for posts matching internship keywords (`intern`, `internship`, `تدريب`, `متدرب`) alongside Egyptian location signals (`Cairo`, `Egypt`, `Giza`, `Maadi`, `New Cairo`, `Alexandria`, `6th of October`, `Google Forms`, etc.).
 2. **Instant Local Reporting**:
    - When a matching post is found, it automatically submits the URL to your local or deployed Internee tracker via `/api/community/quick-drop`.
-   - Displays a sleek matte-black floating toast in the lower right corner confirming the sighting.
+   - Displays a sleek Catppuccin Mocha floating toast in the lower right corner confirming the sighting.
 3. **Smart Deduplication**:
    - Strips tracking query parameters (`?refId=...`, `?s=...`) and caches seen IDs locally in `chrome.storage.local` to prevent duplicate submissions.
 
 ---
 
-## 🚀 Installation Guide (Chrome / Brave / Edge)
+## 🦊 Installation Guide for Zen Browser & Firefox
+
+Zen Browser is Gecko/Firefox-based. To load the extension:
+
+1. Open **Zen Browser** (or Firefox) and navigate to:
+   ```
+   about:debugging#/runtime/this-firefox
+   ```
+2. Under **Temporary Extensions**, click the button:
+   ```
+   Load Temporary Add-on...
+   ```
+3. In the file picker, navigate to this project's `extension/` directory and select `manifest.json`:
+   ```
+   /home/abdulrahman/Internee/extension/manifest.json
+   ```
+4. **Internee Scout 🇪🇬** is now loaded and actively monitoring LinkedIn and X tabs!
+
+---
+
+## 🌐 Installation Guide for Chrome / Brave / Edge / Arc
 
 1. Open your Chromium-based browser and navigate to the Extensions page:
    - **Chrome**: `chrome://extensions`
    - **Brave**: `brave://extensions`
    - **Edge**: `edge://extensions`
-2. Enable **Developer mode** (toggle switch located at the top right corner).
+2. Enable **Developer mode** (toggle switch in the top right corner).
 3. Click **Load unpacked** in the top left.
-4. Select the `extension/` folder inside this repository:
+4. Select the `extension/` folder:
    ```
    /home/abdulrahman/Internee/extension
    ```
-5. The extension **Internee Scout 🇪🇬** will now appear in your browser extension toolbar!
+5. The extension will appear in your browser extension toolbar.
 
 ---
 

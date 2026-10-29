@@ -28,7 +28,7 @@ export function ClientLayoutShell({ children }: ClientLayoutShellProps) {
   const openCount = allInternships.filter((i) => i.status === "open").length;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#0D0D0C] text-[#ECECEC]">
+    <div className="flex flex-col min-h-screen bg-[#1e1e2e] text-[#cdd6f4]">
       <Navbar onOpenTracker={() => setDrawerOpen(true)} activeCount={openCount} />
       <main className="flex-1 max-w-[1400px] w-full mx-auto px-6 py-6">
         {children}

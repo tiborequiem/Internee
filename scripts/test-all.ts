@@ -91,7 +91,23 @@ async function runTests() {
     "Accepts recent postings (10 days old)"
   );
 
-  // 1.5 Quality Filter (Junior / Senior / Non-Egypt)
+  // 1.5 Quality Filter (Seniority Prefixes vs Explicit Intern with Specialist/Manager/Full-time)
+  assert(
+    isStrictEgyptInternship("Talent Acquisition Specialist Intern", "Cairo", Date.now()),
+    "Accepts 'Talent Acquisition Specialist Intern' (explicit intern not disqualified by Specialist)"
+  );
+  assert(
+    isStrictEgyptInternship("Product Manager Intern", "Giza", Date.now()),
+    "Accepts 'Product Manager Intern' (explicit intern not disqualified by Manager)"
+  );
+  assert(
+    isStrictEgyptInternship("Full-Time Intern", "Cairo", Date.now()),
+    "Accepts 'Full-Time Intern' (explicit intern not disqualified by Full-Time)"
+  );
+  assert(
+    !isStrictEgyptInternship("Junior Intern", "Cairo", Date.now()),
+    "Strictly blocks 'Junior Intern' (disqualifying seniority prefix)"
+  );
   assert(
     !isStrictEgyptInternship("Junior Software Engineer", "Cairo", Date.now()),
     "Strictly blocks 'Junior Software Engineer'"
@@ -101,8 +117,8 @@ async function runTests() {
     "Strictly blocks 'Senior Backend Engineer'"
   );
   assert(
-    !isStrictEgyptInternship("Full-time Developer Intern", "Cairo", Date.now()),
-    "Strictly blocks 'Full-time Developer'"
+    !isStrictEgyptInternship("Full-time Developer", "Cairo", Date.now()),
+    "Strictly blocks 'Full-time Developer' (lacks intern keyword)"
   );
   assert(
     !isStrictEgyptInternship("Software Engineering Intern", "London, UK", Date.now()),
