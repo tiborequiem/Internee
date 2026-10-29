@@ -11,6 +11,7 @@ export async function POST() {
       summary,
       logs: [
         "Connecting to Workable API (Instabug, Paymob, Breadfast)...",
+        "Querying LinkedIn Undocumented Guest Jobs API (f_E=1 native internship filter)...",
         "Crawling Wuzzuf Verified Egypt Internship feed...",
         "Executing Google Dorks on LinkedIn posts & job postings in Egypt...",
         "Executing Google Dorks on Google Forms summer training programs...",

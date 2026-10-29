@@ -4,6 +4,7 @@ import { ne } from "drizzle-orm";
 import { isStrictEgyptInternship } from "@/lib/internship-filter";
 import { upsertScrapedInternships, ScrapedInternshipInput } from "@/lib/queries";
 import { runDorkScanner } from "./dork-scanner";
+import { runLinkedInGuestScraper } from "./linkedin-guest";
 
 // Regex required by spec
 const TITLE_REGEX = /intern|trainee|graduate|academy|vodanation|rowad|student/i;
@@ -282,8 +283,24 @@ export async function runScrapers() {
     console.warn("Dork scanner error:", err);
   }
 
-  const totalAdded = portalResult.added + dorkResult.added;
-  const totalDiscovered = allScrapedCandidates.length + dorkResult.validCandidates;
+  // 3. Execute LinkedIn Undocumented Guest Jobs Scraper (f_E=1)
+  let linkedInResult = {
+    keywordsChecked: 0,
+    discovered: 0,
+    added: 0,
+    skipped: 0,
+    rejectedByFilter: 0,
+  };
+
+  try {
+    linkedInResult = await runLinkedInGuestScraper();
+  } catch (err) {
+    console.warn("LinkedIn guest scraper error:", err);
+  }
+
+  const totalAdded = portalResult.added + dorkResult.added + linkedInResult.added;
+  const totalDiscovered =
+    allScrapedCandidates.length + dorkResult.validCandidates + linkedInResult.discovered;
 
   return {
     success: true,
@@ -293,10 +310,13 @@ export async function runScrapers() {
     dorkScannedQueries: dorkResult.scannedQueries,
     dorkHitsFound: dorkResult.rawHitsFound,
     dorkAdded: dorkResult.added,
+    linkedInDiscovered: linkedInResult.discovered,
+    linkedInAdded: linkedInResult.added,
     totalDiscovered,
     newRolesAdded: totalAdded,
-    existingSkipped: portalResult.skipped + dorkResult.skipped,
-    rejectedByFilter: portalResult.rejectedByFilter + dorkResult.rejectedByFilter,
+    existingSkipped: portalResult.skipped + dorkResult.skipped + linkedInResult.skipped,
+    rejectedByFilter:
+      portalResult.rejectedByFilter + dorkResult.rejectedByFilter + linkedInResult.rejectedByFilter,
     details: reportDetails,
     timestamp: new Date().toISOString(),
   };
