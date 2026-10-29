@@ -7,8 +7,11 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   let internships = await getPublicInternships();
 
-  // If the database has 0 internships (e.g. freshly initialized DB), trigger initial ingest
-  if (internships.length === 0) {
+  // If the database has no live listings from LinkedIn or Wuzzuf, trigger ingest
+  const hasLiveFeed = internships.some(
+    (i) => i.source === "linkedin" || i.source === "wuzzuf"
+  );
+  if (!hasLiveFeed) {
     try {
       await runScrapers();
       internships = await getPublicInternships();

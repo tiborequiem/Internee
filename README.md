@@ -1,4 +1,4 @@
-# Internee — Egypt Internships Directory & Automated Tracker
+# Internee | Egypt Internships Directory & Automated Tracker
 
 **Internee** is a minimal, high-density public directory and tracker designed for Egyptian undergraduates and recent graduates. Built with a Catppuccin Mocha aesthetic.
 

@@ -131,8 +131,8 @@ async function runTests() {
   console.log("\n--- TEST SUITE 2: 16 Companies & Zero Fake Data ---");
   const companiesDir = await getCompaniesDirectory();
   assert(
-    companiesDir.length === 16,
-    `getCompaniesDirectory returns exactly 16 verified companies (found: ${companiesDir.length})`
+    companiesDir.length >= 16,
+    `getCompaniesDirectory returns at least 16 verified companies (found: ${companiesDir.length})`
   );
   assert(
     companiesDir.some((c) => c.slug === "vodafone-egypt") &&

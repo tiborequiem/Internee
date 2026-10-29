@@ -48,7 +48,7 @@ function CompanyCard({ company }: { company: CompanyWithStats }) {
             <span className="text-[#a6adc8]">
               {company.activeInternshipsCount > 0
                 ? `${company.activeInternshipsCount} open`
-                : "Off-season"}
+                : "Off season"}
             </span>
           </div>
         </div>

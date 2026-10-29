@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPublicInternships } from "@/lib/queries";
+import { runScrapers } from "@/lib/scrapers";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,7 @@ export async function GET(request: NextRequest) {
   const source = searchParams.get("source") || undefined;
 
   try {
-    const list = await getPublicInternships({
+    let list = await getPublicInternships({
       sector,
       category,
       location,
@@ -21,6 +22,24 @@ export async function GET(request: NextRequest) {
       search,
       source,
     });
+
+    // Auto-heal if live feed is empty
+    if (!list.some((i) => i.source === "linkedin" || i.source === "wuzzuf")) {
+      try {
+        await runScrapers();
+        list = await getPublicInternships({
+          sector,
+          category,
+          location,
+          status,
+          search,
+          source,
+        });
+      } catch {
+        // Continue with current list
+      }
+    }
+
     return NextResponse.json(list);
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

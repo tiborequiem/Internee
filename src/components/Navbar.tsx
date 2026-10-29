@@ -30,7 +30,7 @@ export function Navbar({ onOpenTracker, activeCount = 0 }: NavbarProps) {
         <div className="flex items-center gap-4">
           <Link href="/" className="flex items-center gap-2 group">
             <span className="font-semibold text-sm tracking-tight text-[#cdd6f4] group-hover:text-white transition-colors">
-              Internee <span className="text-[#6c7086] font-normal">— Egypt</span>
+              Internee <span className="text-[#6c7086] font-normal">Egypt</span>
             </span>
           </Link>
 

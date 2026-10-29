@@ -1,4 +1,4 @@
-# Internee Scout — Feed Internship Detector Extension
+# Internee Scout | Feed Internship Detector Extension
 
 A lightweight, privacy-friendly WebExtension for **Zen Browser**, **Firefox**, **Google Chrome**, **Brave**, **Edge**, and **Arc** that passively scouts and self-reports Egyptian internship opportunities while you scroll LinkedIn and X (Twitter).
 

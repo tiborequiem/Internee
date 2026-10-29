@@ -20,7 +20,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Telecom",
     careersUrl: "https://jobs.vodafone.com/careers?query=intern&location=Egypt",
     scraperType: "html",
-    typicalSeason: "Apr–Jun (Vodanation Summer Intake)",
+    typicalSeason: "Apr to Jun (Vodanation Summer Intake)",
     programName: "Vodanation Summer Internship",
   },
   {
@@ -29,7 +29,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Tech",
     careersUrl: "https://jobs.careers.microsoft.com/global/en/search?q=intern&lc=Egypt",
     scraperType: "html",
-    typicalSeason: "Oct–Feb (Summer) | Aug–Oct (Winter)",
+    typicalSeason: "Oct to Feb (Summer) | Aug to Oct (Winter)",
     programName: "ADC Cairo Software Engineering Internship",
   },
   {
@@ -38,7 +38,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Tech",
     careersUrl: "https://www.amazon.jobs/en/search?base_query=intern&country=EGY",
     scraperType: "html",
-    typicalSeason: "Oct–Mar (Summer Intake)",
+    typicalSeason: "Oct to Mar (Summer Intake)",
     programName: "Software Dev / Operations / Area Manager Intern",
   },
   {
@@ -47,7 +47,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Tech",
     careersUrl: "https://www.google.com/about/careers/applications/jobs/results/?location=Egypt&q=Intern",
     scraperType: "html",
-    typicalSeason: "Oct–Jan (STEP & SWE)",
+    typicalSeason: "Oct to Jan (STEP & SWE)",
     programName: "STEP & SWE Internships",
   },
   {
@@ -56,7 +56,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Tech",
     careersUrl: "https://apply.workable.com/instabug/",
     scraperType: "workable",
-    typicalSeason: "Apr–Jun",
+    typicalSeason: "Apr to Jun",
     programName: "Product, Backend, iOS/Android Summer Internships",
   },
   {
@@ -65,7 +65,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Banking & Fintech",
     careersUrl: "https://apply.workable.com/paymob/",
     scraperType: "workable",
-    typicalSeason: "May–Jul",
+    typicalSeason: "May to Jul",
     programName: "Product, Engineering & Fintech Interns",
   },
   {
@@ -74,7 +74,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Tech",
     careersUrl: "https://apply.workable.com/breadfast/",
     scraperType: "workable",
-    typicalSeason: "Apr–Jul",
+    typicalSeason: "Apr to Jul",
     programName: "Tech, Data & Supply Chain Internships",
   },
   {
@@ -83,7 +83,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Engineering",
     careersUrl: "https://valeo.wd3.myworkdayjobs.com/en-US/valeo_careers?q=intern",
     scraperType: "workday",
-    typicalSeason: "Apr–Jun (Valeo Academy)",
+    typicalSeason: "Apr to Jun (Valeo Academy)",
     programName: "Embedded & Automotive Software Trainee",
   },
   {
@@ -92,7 +92,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Engineering",
     careersUrl: "https://jobs.siemens.com/careers?query=intern&location=Egypt",
     scraperType: "html",
-    typicalSeason: "Mar–Jun",
+    typicalSeason: "Mar to Jun",
     programName: "Siemens EDA Egypt Summer Training",
   },
   {
@@ -101,7 +101,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Banking & Fintech",
     careersUrl: "https://www.cibeg.com/en/careers/students-and-graduates",
     scraperType: "html",
-    typicalSeason: "Apr–Jun (SAS Program)",
+    typicalSeason: "Apr to Jun (SAS Program)",
     programName: "CIB Summer Internship (SAS)",
   },
   {
@@ -110,7 +110,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "FMCG",
     careersUrl: "https://www.pgcareers.com/global/en/search-results?keywords=intern&location=Egypt",
     scraperType: "workday",
-    typicalSeason: "Sep–Nov | Feb–Apr",
+    typicalSeason: "Sep to Nov | Feb to Apr",
     programName: "P&G CEO Challenge & Summer Intern",
   },
   {
@@ -119,16 +119,16 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "FMCG",
     careersUrl: "https://careers.unilever.com/search-jobs/intern/Egypt/",
     scraperType: "workday",
-    typicalSeason: "Mar–May (ULIP)",
+    typicalSeason: "Mar to May (ULIP)",
     programName: "ULIP (Unilever Leadership Internship Program)",
   },
   {
-    name: "PwC Middle East - Egypt",
+    name: "PwC Middle East Egypt",
     slug: "pwc-egypt",
     sector: "Consulting",
     careersUrl: "https://www.pwc.com/m1/en/careers/student-and-graduates.html",
     scraperType: "workday",
-    typicalSeason: "Feb–May | Sep–Nov",
+    typicalSeason: "Feb to May | Sep to Nov",
     programName: "PwC ETIC Tech & Advisory Intern",
   },
   {
@@ -137,7 +137,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Consulting",
     careersUrl: "https://www.mckinsey.com/careers/search-jobs?locations=Cairo&interest=Internships",
     scraperType: "html",
-    typicalSeason: "Sep–Nov | Jan–Mar",
+    typicalSeason: "Sep to Nov | Jan to Mar",
     programName: "Business Analyst Intern",
   },
   {
@@ -146,7 +146,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Engineering",
     careersUrl: "https://elsewedyelectric.com/en/careers/",
     scraperType: "html",
-    typicalSeason: "May–Jul (SIP Program)",
+    typicalSeason: "May to Jul (SIP Program)",
     programName: "Elsewedy Summer Internship Program (SIP)",
   },
   {
@@ -155,7 +155,7 @@ export const EGYPT_COMPANIES_SEED: CompanySeed[] = [
     sector: "Tech",
     careersUrl: "https://wuzzuf.net/search/jobs/?filters%5Bcountry%5D%5B0%5D=Egypt&filters%5Bpost_type%5D%5B0%5D=Internship",
     scraperType: "html",
-    typicalSeason: "Year-Round",
+    typicalSeason: "Year round",
     programName: "Verified Egypt Internship Feed",
   },
 ];
