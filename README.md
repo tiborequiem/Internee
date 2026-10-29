@@ -1,2 +1,52 @@
-# Internee
-Internee is a lightweight job hunting app catered for undergraduates
+# Internee 🇪🇬 | Egypt Internships Directory & Automated Tracker
+
+**Internee** is a minimal, high-density public directory and tracker designed for Egyptian undergraduates and recent graduates. Built with a Linear/Claude-inspired matte-black desktop aesthetic.
+
+---
+
+## 🌟 Key Features
+
+1. **Zero Mock Data Guarantee**:
+   - Zero hardcoded, fake, or placeholder internships.
+   - Database starts clean with verified company portals only; listings appear only when scraped live or submitted by the community and verified.
+
+2. **Strict Dynamic Year & Recency Filter (`isStrictEgyptInternship`)**:
+   - **Blocks Past Years:** Automatically extracts any 4-digit year `(20\d{2})` and rejects anything `< currentYear` (e.g. 2024, 2025).
+   - **Blocks Expired Seasons:** If current month is $\ge$ September, blocks `Summer ${currentYear}` and `Spring ${currentYear}`.
+   - **Blocks Stale Postings:** Postings older than 45 days from `Date.now()` are rejected and automatically hidden from public views.
+   - **Blocks Junior/Full-time pollution:** Strictly allows only undergraduate internships, summer training, and graduate academies.
+
+3. **16 Highest-Signal Verified Egyptian Companies**:
+   - Vodafone Egypt (_VOIS), Microsoft Egypt ADC, Amazon Egypt, Google Cairo, Instabug / Luciq, Paymob, Breadfast, Valeo Egypt, Siemens EDA Egypt, CIB Egypt, P&G Egypt, Unilever Egypt, PwC Middle East - Egypt, McKinsey Cairo, Elsewedy Electric, Wuzzuf Verified Internships.
+
+4. **Claude / Linear Minimal Matte-Black Desktop UI**:
+   - Warm matte obsidian `#0D0D0C`, surface `#161614`, borders `#262624`, text `#ECECEC`, terracotta accent `#D97757`, subtle green indicator `#4ADE80`.
+   - Single-line `h-14` header with live count and instant navigation tabs.
+   - 2-Column workspace with sticky left sidebar (search, open toggle, categories, locations, sectors) and compact interactive table rows.
+   - Honest empty state: *"No verified openings live right now. Switch to the Company Radar tab to browse direct career portals for Egypt's top 16 employers."*
+
+5. **Local Browser Persistence**:
+   - `localStorage` key `egypt_internships_tracker` tracks application status: `Saved` &rarr; `Applied` &rarr; `Interviewing`.
+
+---
+
+## 🚀 Quick Start
+
+```bash
+cd ~/Internee
+npm install
+npm run db:push
+npm run db:seed
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000).
+
+---
+
+## 🧪 Testing
+
+```bash
+npx tsx scripts/test-all.ts
+npx tsx scripts/test-api-routes.ts
+```
