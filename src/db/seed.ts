@@ -4,11 +4,11 @@ import { EGYPT_COMPANIES_SEED } from "./seed-data";
 import { runScrapers } from "@/lib/scrapers";
 
 export async function seed(autoScrape = false) {
-  console.log("🌱 Resetting and seeding database with verified companies ONLY...");
+  console.log("Resetting and seeding database with verified companies...");
 
   // Delete all existing internships (NO FAKE / MOCKED DATA)
   await db.delete(internships);
-  console.log("🧹 Cleared all internship rows (0 mock listings).");
+  console.log("Cleared all internship rows (0 mock listings).");
 
   // Delete existing companies to ensure clean 16-company roster
   await db.delete(companies);
@@ -30,17 +30,17 @@ export async function seed(autoScrape = false) {
     });
   }
 
-  console.log(`✅ Database ready: 16 companies seeded, 0 fake internships.`);
+  console.log(`Database ready: 16 companies seeded, 0 fake internships.`);
 
   if (autoScrape || process.argv.includes("--scrape")) {
-    console.log("🚀 Ingesting real active internships from live networks (LinkedIn, Wuzzuf, Portals)...");
+    console.log("Ingesting real active internships from live networks (LinkedIn, Wuzzuf, Portals)...");
     try {
       const summary = await runScrapers();
       console.log(
-        `✨ Live Ingestion Complete: ${summary.newRolesAdded} new roles live (${summary.totalDiscovered} total found).`
+        `Live ingestion complete: ${summary.newRolesAdded} new roles live (${summary.totalDiscovered} total found).`
       );
     } catch (err: any) {
-      console.warn("⚠️ Live ingest skipped:", err.message);
+      console.warn("Live ingest skipped:", err.message);
     }
   }
 }

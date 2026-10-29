@@ -239,7 +239,7 @@ async function queryDuckDuckGoFallback(query: string): Promise<SearchHit[]> {
  * Execute Dork Scanner across all target queries
  */
 export async function runDorkScanner() {
-  console.log("🕵️‍♂️ Running Social & Google-Dork Discovery Engine...");
+  console.log("[DorkScanner] Running Social & Google-Dork Discovery Engine...");
   const serperKey = process.env.SERPER_API_KEY;
 
   const allHits: SearchHit[] = [];

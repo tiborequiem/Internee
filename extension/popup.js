@@ -29,13 +29,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (typeof chrome !== "undefined" && chrome.storage && chrome.storage.local) {
       chrome.storage.local.set({ apiUrl, handle }, () => {
-        savedStatus.textContent = "Settings saved ✓";
+        savedStatus.textContent = "Settings saved";
         setTimeout(() => {
           savedStatus.textContent = "";
         }, 2000);
       });
     } else {
-      savedStatus.textContent = "Settings saved (mock) ✓";
+      savedStatus.textContent = "Settings saved";
       setTimeout(() => {
         savedStatus.textContent = "";
       }, 2000);

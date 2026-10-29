@@ -2,7 +2,7 @@
 // Internee Scout: Passive & batch feed harvester for LinkedIn, X, Indeed, Glassdoor & Wuzzuf
 
 (function () {
-  console.log("🎯 [Internee Scout] Initialized on:", window.location.hostname);
+  console.log("[Internee Scout] Initialized on:", window.location.hostname);
 
   const INTERN_REGEX = /(intern|internship|trainee|تدريب|متدرب)/i;
   const EGYPT_SIGNAL_REGEX = /(cairo|egypt|giza|maadi|new cairo|alexandria|october|zayed|smart village|dokki|heliopolis|send your cv|google\.com\/forms|apply)/i;
@@ -51,7 +51,7 @@
     toast.style.pointerEvents = "auto";
 
     toast.innerHTML = `
-      <span style="color:#cba6f7; font-size:14px;">🌱</span>
+      <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#cba6f7; flex-shrink:0;"></span>
       <div>
         <div style="font-weight:600; color:#cdd6f4;">${title}</div>
         <div style="color:#a6adc8; font-size:10px; max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${message}</div>

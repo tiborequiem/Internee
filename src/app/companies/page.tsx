@@ -4,9 +4,8 @@ import { CompaniesExplorer } from "@/components/CompaniesExplorer";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Egyptian Companies Directory | Internee 🇪🇬",
-  description:
-    "Explore 60+ top companies and multinationals hiring interns in Egypt. Check their typical recruitment cycles and direct application portals.",
+  title: "Companies | Internee",
+  description: "Monitored employers and direct career portals in Egypt.",
 };
 
 export default async function CompaniesPage() {

@@ -1,4 +1,4 @@
-# Internee Scout 🇪🇬 — Feed Internship Detector Extension
+# Internee Scout — Feed Internship Detector Extension
 
 A lightweight, privacy-friendly WebExtension for **Zen Browser**, **Firefox**, **Google Chrome**, **Brave**, **Edge**, and **Arc** that passively scouts and self-reports Egyptian internship opportunities while you scroll LinkedIn and X (Twitter).
 
@@ -6,7 +6,7 @@ Styled in authentic **Catppuccin Mocha** palette.
 
 ---
 
-## ⚡ How It Works
+## How It Works
 
 1. **Passive Feed Monitoring**:
    - Uses a non-intrusive `MutationObserver` operating at human scroll speeds (~1.2s debounce).
@@ -19,7 +19,7 @@ Styled in authentic **Catppuccin Mocha** palette.
 
 ---
 
-## 🦊 Installation Guide for Zen Browser & Firefox
+## Installation Guide for Zen Browser & Firefox
 
 Zen Browser is Gecko/Firefox-based. To load the extension:
 
@@ -35,11 +35,11 @@ Zen Browser is Gecko/Firefox-based. To load the extension:
    ```
    /home/abdulrahman/Internee/extension/manifest.json
    ```
-4. **Internee Scout 🇪🇬** is now loaded and actively monitoring LinkedIn and X tabs!
+4. **Internee Scout** is now loaded and actively monitoring LinkedIn and X tabs!
 
 ---
 
-## 🌐 Installation Guide for Chrome / Brave / Edge / Arc
+## Installation Guide for Chrome / Brave / Edge / Arc
 
 1. Open your Chromium-based browser and navigate to the Extensions page:
    - **Chrome**: `chrome://extensions`
@@ -55,7 +55,7 @@ Zen Browser is Gecko/Firefox-based. To load the extension:
 
 ---
 
-## ⚙️ Configuration & Settings
+## Configuration & Settings
 
 Click on the extension icon in your browser toolbar to open the settings popup:
 
@@ -69,7 +69,7 @@ Click on the extension icon in your browser toolbar to open the settings popup:
 
 ---
 
-## 🛡️ Privacy & Permissions
+## Privacy & Permissions
 
 - **Local Processing**: All regex analysis happens directly inside your browser on the DOM.
 - **No Background Polling or Scraping**: The extension does not perform automated requests to LinkedIn or Twitter servers; it only listens to what is rendered on your active feed as you scroll.

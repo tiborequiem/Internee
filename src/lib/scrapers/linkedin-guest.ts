@@ -210,7 +210,7 @@ export async function scrapeLinkedInGuestEndpoint(endpoint: {
  * Runs the LinkedIn Guest Jobs scraper across all targeted endpoints
  */
 export async function runLinkedInGuestScraper() {
-  console.log("🔗 Running LinkedIn Guest Jobs Scraper (Dual-Endpoint: f_E=1 + Public HR feed)...");
+  console.log("[LinkedIn] Running LinkedIn Guest Jobs Scraper (Dual-Endpoint: f_E=1 + Public HR feed)...");
   const allDiscovered: ScrapedInternshipInput[] = [];
 
   for (const endpoint of LINKEDIN_ENDPOINTS) {

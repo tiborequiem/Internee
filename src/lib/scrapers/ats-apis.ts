@@ -186,7 +186,7 @@ export async function scrapeSmartRecruiters(): Promise<ScrapedInternshipInput[]>
  * Runs all Workable and SmartRecruiters scrapers and upserts results
  */
 export async function runAtsScrapers() {
-  console.log("⚡ Running Workable & SmartRecruiters ATS Public APIs...");
+  console.log("[ATS] Running Workable & SmartRecruiters ATS Public APIs...");
 
   const workableJobs = await scrapeWorkableAccounts();
   const smartJobs = await scrapeSmartRecruiters();

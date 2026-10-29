@@ -3,9 +3,8 @@ import "./globals.css";
 import { ClientLayoutShell } from "@/components/ClientLayoutShell";
 
 export const metadata: Metadata = {
-  title: "Internee 🇪🇬 | Egypt Internships Directory & Automated Tracker",
-  description:
-    "Discover verified student internships, summer training, and graduate academies across Egypt. Automated crawler for tech, telecom, finance, and multinationals.",
+  title: "Internee | Egypt Internships Directory",
+  description: "Verified internships and trainee positions across Egypt.",
 };
 
 export default function RootLayout({

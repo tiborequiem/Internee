@@ -17,7 +17,7 @@ import { seed } from "../src/db/seed";
 
 async function runTests() {
   console.log("=========================================");
-  console.log("🧪 RUNNING SYSTEM SPECIFICATION TESTS");
+  console.log("RUNNING SYSTEM SPECIFICATION TESTS");
   console.log("=========================================\n");
 
   await seed(false);
@@ -27,10 +27,10 @@ async function runTests() {
 
   function assert(condition: boolean, testName: string, detail?: any) {
     if (condition) {
-      console.log(`✅ [PASS] ${testName}`);
+      console.log(`[PASS] ${testName}`);
       passed++;
     } else {
-      console.error(`❌ [FAIL] ${testName}`, detail || "");
+      console.error(`[FAIL] ${testName}`, detail || "");
       failed++;
     }
   }

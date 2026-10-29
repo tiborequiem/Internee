@@ -232,7 +232,7 @@ async function scrapeCompany(company: typeof companies.$inferSelect): Promise<Sc
  * Runs both the company scrapers and the social/form Google-dork scanner
  */
 export async function runScrapers() {
-  console.log("🚀 Starting scraper engine (Portals + Social/Dork Discovery)...");
+  console.log("[Scraper] Starting scraper engine (Portals + Social/Dork Discovery)...");
 
   const automatedCompanies = await db
     .select()

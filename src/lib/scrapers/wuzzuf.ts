@@ -259,7 +259,7 @@ export async function scrapeWuzzufFeed(): Promise<ScrapedInternshipInput[]> {
  * Runs the Wuzzuf scraper and upserts discovered roles
  */
 export async function runWuzzufScraper() {
-  console.log("🌐 Running Wuzzuf Egypt Internship Scraper...");
+  console.log("[Wuzzuf] Running Wuzzuf Egypt Internship Scraper...");
   const candidates = await scrapeWuzzufFeed();
 
   // Deduplicate by clean application URL

@@ -199,7 +199,7 @@ export async function scrapeGlassdoorEgypt(): Promise<ScrapedInternshipInput[]> 
  * Runs Indeed & Glassdoor server-side scrapers and upserts results
  */
 export async function runIndeedGlassdoorScraper() {
-  console.log("💼 Running Indeed Egypt & Glassdoor Scrapers (Direct fetch + Graceful Cloudflare fallback)...");
+  console.log("[Indeed/Glassdoor] Running Indeed Egypt & Glassdoor Scrapers (Direct fetch + Graceful Cloudflare fallback)...");
 
   const indeedJobs = await scrapeIndeedEgypt();
   const glassdoorJobs = await scrapeGlassdoorEgypt();

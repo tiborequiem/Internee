@@ -178,7 +178,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
                   currentStatus === "saved" ? "font-bold text-amber-700" : "text-slate-700"
                 }`}
               >
-                <span>⭐ Saved</span>
+                <span>Saved</span>
                 {currentStatus === "saved" && <span className="text-[10px]">Active</span>}
               </button>
               <button
@@ -188,7 +188,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
                   currentStatus === "applied" ? "font-bold text-blue-700" : "text-slate-700"
                 }`}
               >
-                <span>📬 Applied</span>
+                <span>Applied</span>
                 {currentStatus === "applied" && <span className="text-[10px]">Active</span>}
               </button>
               <button
@@ -198,7 +198,7 @@ export function InternshipCard({ internship }: InternshipCardProps) {
                   currentStatus === "interviewing" ? "font-bold text-purple-700" : "text-slate-700"
                 }`}
               >
-                <span>💬 Interviewing</span>
+                <span>Interviewing</span>
                 {currentStatus === "interviewing" && <span className="text-[10px]">Active</span>}
               </button>
 

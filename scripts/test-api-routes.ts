@@ -9,7 +9,7 @@ import { detectSourceType, parseSearchResultToInternship } from "../src/lib/scra
 
 async function testApiRoutes() {
   console.log("=========================================");
-  console.log("🌐 TESTING NEXT.JS API ROUTE HANDLERS");
+  console.log("TESTING NEXT.JS API ROUTE HANDLERS");
   console.log("=========================================\n");
 
   let passed = 0;
@@ -17,10 +17,10 @@ async function testApiRoutes() {
 
   function assert(cond: boolean, desc: string, extra?: any) {
     if (cond) {
-      console.log(`✅ [PASS] ${desc}`);
+      console.log(`[PASS] ${desc}`);
       passed++;
     } else {
-      console.error(`❌ [FAIL] ${desc}`, extra || "");
+      console.error(`[FAIL] ${desc}`, extra || "");
       failed++;
     }
   }

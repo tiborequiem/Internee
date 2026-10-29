@@ -57,12 +57,6 @@
       height: 5px;
       border-radius: 50%;
       background-color: #a6e3a1;
-      animation: pulse 1.8s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-      100% { opacity: 1; transform: scale(1); }
     }
     .stats-card {
       background-color: #181825;
@@ -161,10 +155,7 @@
 <body>
   <div class="header">
     <div class="brand">
-      <span style="font-size: 16px;">🎯</span>
-      <div>
-        <div class="brand-title">Internee Scout</div>
-      </div>
+      <div class="brand-title">Internee Scout</div>
     </div>
     <div class="badge-live">
       <div class="live-dot"></div>
@@ -193,7 +184,7 @@
   <button class="btn-save" id="saveBtn">Save Settings</button>
   <div class="saved-status" id="savedStatus"></div>
 
-  <a href="#" class="btn-link" id="openDashboard">Open Internee Dashboard &nearr;</a>
+  <a href="#" class="btn-link" id="openDashboard">Open Internee &nearr;</a>
 
   <div class="info-footer">
     Passively extracts Egyptian internship posts &amp; Google Forms as you scroll LinkedIn and X (Twitter).

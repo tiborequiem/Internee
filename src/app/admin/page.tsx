@@ -3,17 +3,7 @@
 import { useState, useEffect } from "react";
 import { InternshipWithCompany } from "@/db/schema";
 import { formatRelativeTime } from "@/lib/utils";
-import {
-  Shield,
-  KeyRound,
-  CheckCircle2,
-  XCircle,
-  ExternalLink,
-  Bot,
-  RefreshCw,
-  AlertCircle,
-  Lock,
-} from "lucide-react";
+import { ExternalLink, Bot, RefreshCw } from "lucide-react";
 
 export default function AdminPage() {
   const [adminSecret, setAdminSecret] = useState("");
@@ -137,21 +127,19 @@ export default function AdminPage() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-sm mx-auto py-16 space-y-4 font-mono text-xs">
-        <div className="space-y-1 text-center">
-          <Shield className="w-5 h-5 text-[#cba6f7] mx-auto" />
-          <h1 className="font-sans text-lg font-semibold text-[#cdd6f4]">Admin Moderation</h1>
-          <p className="text-[#a6adc8]">Enter ADMIN_SECRET passcode.</p>
-        </div>
+        <h1 className="font-sans text-sm font-medium text-[#cdd6f4] text-center">
+          Moderation
+        </h1>
 
         {statusMessage && (
-          <div className="p-3 rounded bg-[#181825] border border-[#f38ba8]/40 text-[#f38ba8] text-xs">
+          <div className="p-2.5 rounded bg-[#181825] border border-[#f38ba8]/40 text-[#f38ba8] text-xs">
             {statusMessage.text}
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="bg-[#181825] border border-[#45475a] rounded-lg p-4 space-y-3 shadow-xl">
+        <form onSubmit={handleLogin} className="bg-[#181825] border border-[#313244] rounded p-4 space-y-3">
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-wider text-[#a6adc8] font-semibold block">
+            <label className="text-xs text-[#6c7086] block">
               Passcode
             </label>
             <input
@@ -160,14 +148,14 @@ export default function AdminPage() {
               value={adminSecret}
               onChange={(e) => setAdminSecret(e.target.value)}
               placeholder="Enter passcode..."
-              className="w-full bg-[#11111b] border border-[#313244] focus:border-[#cba6f7] rounded px-3 py-1.5 text-[#cdd6f4] focus:outline-none"
+              className="w-full bg-[#11111b] border border-[#313244] focus:border-[#cba6f7] rounded px-3 py-1.5 text-[#cdd6f4] placeholder-[#6c7086] focus:outline-none"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 rounded bg-[#cba6f7] hover:bg-[#b4befe] text-[#11111b] font-sans font-semibold transition-colors disabled:opacity-50"
+            className="w-full py-1.5 rounded bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] font-medium transition-colors disabled:opacity-50"
           >
             {loading ? "Verifying..." : "Unlock"}
           </button>
@@ -177,40 +165,40 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="space-y-6 font-mono text-xs">
+    <div className="space-y-4 font-mono text-xs">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#45475a] pb-4">
-        <div>
-          <h1 className="font-sans text-base font-semibold text-[#cdd6f4]">
-            Community Moderation Queue
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#313244] pb-3">
+        <div className="flex items-center gap-2">
+          <h1 className="font-sans text-sm font-medium text-[#cdd6f4]">
+            Moderation
           </h1>
-          <p className="text-[11px] text-[#a6adc8]">
-            One-click approve or reject student submissions.
-          </p>
+          <span className="text-[#6c7086]">
+            ({pendingList.length})
+          </span>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             onClick={handleTriggerScraper}
             disabled={scraping}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#313244] hover:bg-[#45475a] border border-[#45475a] text-[#cdd6f4] transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] transition-colors disabled:opacity-50"
           >
-            <Bot className={`w-3.5 h-3.5 text-[#cba6f7] ${scraping ? "animate-spin" : ""}`} />
-            <span>{scraping ? "Crawling..." : "Trigger Crawler"}</span>
+            <Bot className={`w-3.5 h-3.5 text-[#cba6f7] ${scraping ? "animate-spin" : ""}`} strokeWidth={1.75} />
+            <span>{scraping ? "Scraping..." : "Trigger scrape"}</span>
           </button>
 
           <button
             onClick={() => verifyAndFetch(adminSecret)}
             disabled={loading}
-            className="p-1.5 rounded bg-[#313244] border border-[#45475a] text-[#a6adc8] hover:text-[#cdd6f4]"
+            className="p-1 rounded bg-[#313244] text-[#a6adc8] hover:text-[#cdd6f4] transition-colors"
             title="Refresh"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} strokeWidth={1.75} />
           </button>
 
           <button
             onClick={handleLogout}
-            className="px-2.5 py-1.5 rounded bg-[#181825] border border-[#f38ba8]/40 text-[#f38ba8] hover:bg-[#f38ba8]/15"
+            className="px-2 py-1 rounded text-[#6c7086] hover:text-[#f38ba8] transition-colors"
           >
             Lock
           </button>
@@ -219,7 +207,7 @@ export default function AdminPage() {
 
       {statusMessage && (
         <div
-          className={`p-3 rounded border text-xs ${
+          className={`p-2.5 rounded border text-xs ${
             statusMessage.type === "success"
               ? "bg-[#181825] border-[#a6e3a1]/40 text-[#a6e3a1]"
               : "bg-[#181825] border-[#f38ba8]/40 text-[#f38ba8]"
@@ -229,35 +217,28 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* Moderation Queue Table */}
-      <div className="border border-[#45475a] rounded-lg bg-[#181825] overflow-hidden shadow-xl">
-        <div className="py-2.5 px-4 bg-[#11111b] border-b border-[#45475a] flex items-center justify-between text-[11px] text-[#a6adc8]">
-          <span>PENDING SUBMISSIONS ({pendingList.length})</span>
-        </div>
-
+      {/* Moderation Queue */}
+      <div className="border-y border-[#313244]/60">
         {pendingList.length === 0 ? (
-          <div className="py-16 text-center text-[#a6adc8]">
-            <CheckCircle2 className="w-5 h-5 text-[#a6e3a1] mx-auto mb-2" />
-            <p className="text-xs">Queue is clear. No pending community submissions.</p>
-          </div>
+          <p className="py-12 text-center text-xs text-[#6c7086]">Queue empty.</p>
         ) : (
-          <div className="divide-y divide-[#313244]">
+          <div className="divide-y divide-[#313244]/60">
             {pendingList.map((item) => (
               <div
                 key={item.id}
-                className="py-3 px-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hover:bg-[#313244]/40 transition-colors"
+                className="py-2.5 px-2 flex flex-col md:flex-row md:items-center justify-between gap-2 hover:bg-[#313244]/30 transition-colors"
               >
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <span className="text-[#a6adc8]">{item.company.name}</span>
-                    <span className="text-[#45475a]">/</span>
+                    <span className="text-[#45475a]">·</span>
                     <span className="text-[#cdd6f4] font-sans font-medium">{item.title}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-[11px] text-[#a6adc8]">
+                  <div className="flex items-center gap-2 text-[11px] text-[#6c7086]">
                     <span>{item.category}</span>
-                    <span>•</span>
+                    <span>·</span>
                     <span>{item.location}</span>
-                    <span>•</span>
+                    <span>·</span>
                     <span>{formatRelativeTime(item.createdAt)}</span>
                   </div>
                 </div>
@@ -267,22 +248,22 @@ export default function AdminPage() {
                     href={item.applicationUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-1 text-[#a6adc8] hover:text-[#cdd6f4]"
+                    className="p-1 text-[#6c7086] hover:text-[#cdd6f4] transition-colors"
                     title="Open link"
                   >
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <ExternalLink className="w-3.5 h-3.5" strokeWidth={1.75} />
                   </a>
 
                   <button
                     onClick={() => handleModerate(item.id, "approve")}
-                    className="px-2.5 py-1 rounded bg-[#a6e3a1]/20 text-[#a6e3a1] border border-[#a6e3a1]/40 hover:bg-[#a6e3a1]/30 transition-colors font-medium"
+                    className="px-2 py-0.5 rounded text-[11px] bg-[#a6e3a1]/20 text-[#a6e3a1] hover:bg-[#a6e3a1]/30 transition-colors font-medium"
                   >
                     Approve
                   </button>
 
                   <button
                     onClick={() => handleModerate(item.id, "reject")}
-                    className="px-2.5 py-1 rounded bg-[#f38ba8]/20 text-[#f38ba8] border border-[#f38ba8]/40 hover:bg-[#f38ba8]/30 transition-colors"
+                    className="px-2 py-0.5 rounded text-[11px] bg-[#f38ba8]/20 text-[#f38ba8] hover:bg-[#f38ba8]/30 transition-colors"
                   >
                     Reject
                   </button>

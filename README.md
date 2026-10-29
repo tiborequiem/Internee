@@ -1,10 +1,10 @@
-# Internee 🇪🇬 | Egypt Internships Directory & Automated Tracker
+# Internee — Egypt Internships Directory & Automated Tracker
 
-**Internee** is a minimal, high-density public directory and tracker designed for Egyptian undergraduates and recent graduates. Built with a Linear/Claude-inspired matte-black desktop aesthetic.
+**Internee** is a minimal, high-density public directory and tracker designed for Egyptian undergraduates and recent graduates. Built with a Catppuccin Mocha aesthetic.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 1. **Zero Mock Data Guarantee**:
    - Zero hardcoded, fake, or placeholder internships.
@@ -19,18 +19,18 @@
 3. **16 Highest-Signal Verified Egyptian Companies**:
    - Vodafone Egypt (_VOIS), Microsoft Egypt ADC, Amazon Egypt, Google Cairo, Instabug / Luciq, Paymob, Breadfast, Valeo Egypt, Siemens EDA Egypt, CIB Egypt, P&G Egypt, Unilever Egypt, PwC Middle East - Egypt, McKinsey Cairo, Elsewedy Electric, Wuzzuf Verified Internships.
 
-4. **Claude / Linear Minimal Matte-Black Desktop UI**:
-   - Warm matte obsidian `#0D0D0C`, surface `#161614`, borders `#262624`, text `#ECECEC`, terracotta accent `#D97757`, subtle green indicator `#4ADE80`.
-   - Single-line `h-14` header with live count and instant navigation tabs.
+4. **Minimal Catppuccin Mocha Desktop UI**:
+   - Base canvas `#1e1e2e`, mantle `#181825`, borders `#313244`, text `#cdd6f4`, mauve accent `#cba6f7`.
+   - Single-line header with live count and instant navigation tabs.
    - 2-Column workspace with sticky left sidebar (search, open toggle, categories, locations, sectors) and compact interactive table rows.
-   - Honest empty state: *"No verified openings live right now. Switch to the Company Radar tab to browse direct career portals for Egypt's top 16 employers."*
+   - Quiet, editorial empty state.
 
 5. **Local Browser Persistence**:
    - `localStorage` key `egypt_internships_tracker` tracks application status: `Saved` &rarr; `Applied` &rarr; `Interviewing`.
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 cd ~/Internee
@@ -44,7 +44,7 @@ Visit [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 npx tsx scripts/test-all.ts
