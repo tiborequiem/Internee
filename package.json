@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.14.0",
+    "@vercel/analytics": "^2.0.1",
     "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.38.4",
