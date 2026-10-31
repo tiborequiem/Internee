@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { db, ensureTablesExist } from "@/db";
 import { companies, internships, Company, InternshipWithCompany } from "@/db/schema";
 import { eq, ne, and, or, like, desc, sql } from "drizzle-orm";
 import { isStrictEgyptInternship, checkStrictEgyptInternship } from "@/lib/internship-filter";
@@ -35,61 +35,68 @@ export interface ScrapedInternshipInput {
 export async function getPublicInternships(
   filters: PublicInternshipFilters = {}
 ): Promise<InternshipWithCompany[]> {
-  const conditions = [ne(internships.status, "pending_review")];
+  try {
+    await ensureTablesExist();
 
-  if (filters.category && filters.category !== "all") {
-    conditions.push(eq(internships.category, filters.category));
+    const conditions = [ne(internships.status, "pending_review")];
+
+    if (filters.category && filters.category !== "all") {
+      conditions.push(eq(internships.category, filters.category));
+    }
+
+    if (filters.location && filters.location !== "all") {
+      conditions.push(like(internships.location, `%${filters.location}%`));
+    }
+
+    if (filters.status && filters.status !== "all") {
+      conditions.push(eq(internships.status, filters.status));
+    }
+
+    if (filters.sector && filters.sector !== "all") {
+      conditions.push(eq(companies.sector, filters.sector));
+    }
+
+    if (filters.source && filters.source !== "all") {
+      conditions.push(like(internships.source, `%${filters.source.toLowerCase()}%`));
+    }
+
+    if (filters.search && filters.search.trim() !== "") {
+      const term = `%${filters.search.trim()}%`;
+      conditions.push(
+        or(
+          like(internships.title, term),
+          like(companies.name, term),
+          like(internships.location, term)
+        )!
+      );
+    }
+
+    // Drizzle query joining companies and internships
+    const rows = await db
+      .select({
+        internship: internships,
+        company: companies,
+      })
+      .from(internships)
+      .innerJoin(companies, eq(internships.companyId, companies.id))
+      .where(and(...conditions))
+      .orderBy(
+        sql`CASE WHEN ${internships.status} = 'open' THEN 0 ELSE 1 END`,
+        desc(internships.createdAt)
+      );
+
+    return rows
+      .map((r) => ({
+        ...r.internship,
+        company: r.company,
+      }))
+      .filter((item) =>
+        isStrictEgyptInternship(item.title, item.location, item.postedAt || item.createdAt)
+      );
+  } catch (err: any) {
+    console.error("[getPublicInternships] Database query failed:", err?.message || err);
+    return [];
   }
-
-  if (filters.location && filters.location !== "all") {
-    conditions.push(like(internships.location, `%${filters.location}%`));
-  }
-
-  if (filters.status && filters.status !== "all") {
-    conditions.push(eq(internships.status, filters.status));
-  }
-
-  if (filters.sector && filters.sector !== "all") {
-    conditions.push(eq(companies.sector, filters.sector));
-  }
-
-  if (filters.source && filters.source !== "all") {
-    conditions.push(like(internships.source, `%${filters.source.toLowerCase()}%`));
-  }
-
-  if (filters.search && filters.search.trim() !== "") {
-    const term = `%${filters.search.trim()}%`;
-    conditions.push(
-      or(
-        like(internships.title, term),
-        like(companies.name, term),
-        like(internships.location, term)
-      )!
-    );
-  }
-
-  // Drizzle query joining companies and internships
-  const rows = await db
-    .select({
-      internship: internships,
-      company: companies,
-    })
-    .from(internships)
-    .innerJoin(companies, eq(internships.companyId, companies.id))
-    .where(and(...conditions))
-    .orderBy(
-      sql`CASE WHEN ${internships.status} = 'open' THEN 0 ELSE 1 END`,
-      desc(internships.createdAt)
-    );
-
-  return rows
-    .map((r) => ({
-      ...r.internship,
-      company: r.company,
-    }))
-    .filter((item) =>
-      isStrictEgyptInternship(item.title, item.location, item.postedAt || item.createdAt)
-    );
 }
 
 /**
@@ -100,37 +107,44 @@ export async function getPublicInternships(
 export async function getCompaniesDirectory(): Promise<
   (Company & { activeInternshipsCount: number; totalInternshipsCount: number })[]
 > {
-  const allCompanies = await db
-    .select()
-    .from(companies)
-    .orderBy(companies.name);
+  try {
+    await ensureTablesExist();
 
-  const activeCounts = await db
-    .select({
-      companyId: internships.companyId,
-      activeCount: sql<number>`count(case when ${internships.status} = 'open' then 1 end)`,
-      totalCount: sql<number>`count(${internships.id})`,
-    })
-    .from(internships)
-    .where(ne(internships.status, "pending_review"))
-    .groupBy(internships.companyId);
+    const allCompanies = await db
+      .select()
+      .from(companies)
+      .orderBy(companies.name);
 
-  const countMap = new Map<number, { active: number; total: number }>();
-  for (const c of activeCounts) {
-    countMap.set(c.companyId, {
-      active: Number(c.activeCount) || 0,
-      total: Number(c.totalCount) || 0,
+    const activeCounts = await db
+      .select({
+        companyId: internships.companyId,
+        activeCount: sql<number>`count(case when ${internships.status} = 'open' then 1 end)`,
+        totalCount: sql<number>`count(${internships.id})`,
+      })
+      .from(internships)
+      .where(ne(internships.status, "pending_review"))
+      .groupBy(internships.companyId);
+
+    const countMap = new Map<number, { active: number; total: number }>();
+    for (const c of activeCounts) {
+      countMap.set(c.companyId, {
+        active: Number(c.activeCount) || 0,
+        total: Number(c.totalCount) || 0,
+      });
+    }
+
+    return allCompanies.map((c) => {
+      const stats = countMap.get(c.id) || { active: 0, total: 0 };
+      return {
+        ...c,
+        activeInternshipsCount: stats.active,
+        totalInternshipsCount: stats.total,
+      };
     });
+  } catch (err: any) {
+    console.error("[getCompaniesDirectory] Database query failed:", err?.message || err);
+    return [];
   }
-
-  return allCompanies.map((c) => {
-    const stats = countMap.get(c.id) || { active: 0, total: 0 };
-    return {
-      ...c,
-      activeInternshipsCount: stats.active,
-      totalInternshipsCount: stats.total,
-    };
-  });
 }
 
 /**
@@ -146,6 +160,7 @@ export async function submitCommunityInternship(data: {
   sourceType?: string;
   submittedBy?: string;
 }) {
+  await ensureTablesExist();
   const cleanCompanyName = data.companyName.trim();
   const cleanTitle = data.title.trim();
   const cleanUrl = data.applicationUrl.trim();
@@ -214,6 +229,7 @@ export async function submitCommunityInternship(data: {
 export async function upsertScrapedInternships(
   items: ScrapedInternshipInput[]
 ): Promise<{ added: number; skipped: number; rejectedByFilter: number }> {
+  await ensureTablesExist();
   let added = 0;
   let skipped = 0;
   let rejectedByFilter = 0;
@@ -414,26 +430,37 @@ export async function getPendingInternships(adminSecret: string): Promise<Intern
  * Platform directory summary stats
  */
 export async function getPlatformStats() {
-  const totalCompaniesResult = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(companies)
-    .get();
+  try {
+    await ensureTablesExist();
 
-  const activeInternshipsResult = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(internships)
-    .where(eq(internships.status, "open"))
-    .get();
+    const totalCompaniesResult = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(companies)
+      .get();
 
-  const pendingSubmissionsResult = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(internships)
-    .where(eq(internships.status, "pending_review"))
-    .get();
+    const activeInternshipsResult = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(internships)
+      .where(eq(internships.status, "open"))
+      .get();
 
-  return {
-    totalCompanies: Number(totalCompaniesResult?.count || 0),
-    activeInternships: Number(activeInternshipsResult?.count || 0),
-    pendingSubmissions: Number(pendingSubmissionsResult?.count || 0),
-  };
+    const pendingSubmissionsResult = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(internships)
+      .where(eq(internships.status, "pending_review"))
+      .get();
+
+    return {
+      totalCompanies: Number(totalCompaniesResult?.count || 0),
+      activeInternships: Number(activeInternshipsResult?.count || 0),
+      pendingSubmissions: Number(pendingSubmissionsResult?.count || 0),
+    };
+  } catch (err: any) {
+    console.error("[getPlatformStats] Database query failed:", err?.message || err);
+    return {
+      totalCompanies: 0,
+      activeInternships: 0,
+      pendingSubmissions: 0,
+    };
+  }
 }
