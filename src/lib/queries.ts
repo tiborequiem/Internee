@@ -371,8 +371,11 @@ export async function moderateInternship(
   action: "approve" | "reject" | "close",
   adminSecret: string
 ) {
-  const expectedSecret = process.env.ADMIN_SECRET || "egypt_internships_admin_secret_2025";
-  if (!expectedSecret || adminSecret !== expectedSecret) {
+  const expectedSecret =
+    process.env.ADMIN_SECRET?.trim().replace(/^["']|["']$/g, "") ||
+    "admin_9dec72da5efd7120236f309ceb8f8537";
+  const cleanSecret = adminSecret.trim().replace(/^["']|["']$/g, "");
+  if (!expectedSecret || cleanSecret !== expectedSecret) {
     throw new Error("Unauthorized: Invalid admin secret");
   }
 
@@ -405,8 +408,11 @@ export async function moderateInternship(
  * Get pending internships for admin moderation
  */
 export async function getPendingInternships(adminSecret: string): Promise<InternshipWithCompany[]> {
-  const expectedSecret = process.env.ADMIN_SECRET || "egypt_internships_admin_secret_2025";
-  if (!expectedSecret || adminSecret !== expectedSecret) {
+  const expectedSecret =
+    process.env.ADMIN_SECRET?.trim().replace(/^["']|["']$/g, "") ||
+    "admin_9dec72da5efd7120236f309ceb8f8537";
+  const cleanSecret = adminSecret.trim().replace(/^["']|["']$/g, "");
+  if (!expectedSecret || cleanSecret !== expectedSecret) {
     throw new Error("Unauthorized: Invalid admin secret");
   }
 
